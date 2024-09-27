@@ -1,0 +1,129 @@
+-- MySQL dump 10.13  Distrib 8.0.39, for Linux (x86_64)
+--
+-- Host: localhost    Database: hw4_db
+-- ------------------------------------------------------
+-- Server version	8.0.39-0ubuntu0.20.04.1
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `assignment`
+--
+
+DROP TABLE IF EXISTS `assignment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `assignment` (
+  `PID` int NOT NULL,
+  `EID` int NOT NULL,
+  `Hours` decimal(10,2) DEFAULT NULL,
+  `Charge` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`PID`,`EID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `assignment`
+--
+
+LOCK TABLES `assignment` WRITE;
+/*!40000 ALTER TABLE `assignment` DISABLE KEYS */;
+INSERT INTO `assignment` VALUES (15,101,19.40,2037.00),(15,102,23.80,2302.65),(15,103,23.80,2011.10),(15,105,35.70,3748.50),(15,106,12.60,450.45),(18,104,32.40,3135.70),(18,112,44.00,2021.80),(18,114,24.60,1183.26),(18,118,45.30,831.71),(22,104,48.40,4682.70),(22,105,64.70,6793.50),(22,106,12.80,457.60),(22,111,22.00,591.14),(22,113,23.60,1135.16),(25,101,56.30,1198.20),(25,107,24.60,876.57),(25,108,23.60,3196.56),(25,112,41.40,1890.30),(25,114,33.10,2037.00),(25,115,45.80,4311.15),(25,118,30.50,688.08);
+/*!40000 ALTER TABLE `assignment` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `employee`
+--
+
+DROP TABLE IF EXISTS `employee`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `employee` (
+  `ID` int NOT NULL,
+  `Name` varchar(50) DEFAULT NULL,
+  `jobID` int DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `employee`
+--
+
+LOCK TABLES `employee` WRITE;
+/*!40000 ALTER TABLE `employee` DISABLE KEYS */;
+INSERT INTO `employee` VALUES (101,'John G. News',2),(102,'David H. Senior',4),(103,'June E. Arbough',1),(104,'Anne K. Ramoras',4),(105,'Alice K. Johnson',2),(106,'William Smithfield',3),(107,'Maria D. Alonzo',3),(108,'Ralph B. Washington',4),(111,'Geoff B. Wabash',8),(112,'Darlene M. Smithson',7),(113,'Delbert K. Joenbrood',5),(114,'Annelise Jones',5),(115,'Travis B. Biwangi',4),(118,'James F. Frommer',6);
+/*!40000 ALTER TABLE `employee` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `job`
+--
+
+DROP TABLE IF EXISTS `job`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `job` (
+  `ID` int NOT NULL,
+  `Title` varchar(100) DEFAULT NULL,
+  `Payrate` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `job`
+--
+
+LOCK TABLES `job` WRITE;
+/*!40000 ALTER TABLE `job` DISABLE KEYS */;
+INSERT INTO `job` VALUES (1,'Elec. Engineer',84.50),(2,'Database Designer',105.00),(3,'Programmer',35.75),(4,'Systems Analyst',96.75),(5,'Applications Designer',48.10),(6,'General Support',18.36),(7,'DSS Analyst',45.95),(8,'Clerical Support',26.87);
+/*!40000 ALTER TABLE `job` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `project`
+--
+
+DROP TABLE IF EXISTS `project`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `project` (
+  `ID` int NOT NULL,
+  `Name` varchar(50) DEFAULT NULL,
+  `leaderID` int DEFAULT NULL,
+  `Cost` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `project`
+--
+
+LOCK TABLES `project` WRITE;
+/*!40000 ALTER TABLE `project` DISABLE KEYS */;
+INSERT INTO `project` VALUES (15,'Evergreen',105,10549.70),(18,'Amber Wave',104,7171.47),(22,'Rolling Tide',113,13660.10),(25,'Starflight',101,17559.82);
+/*!40000 ALTER TABLE `project` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2024-09-27 10:28:56

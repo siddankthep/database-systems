@@ -1,9 +1,5 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSetMetaData;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Controller {
     private Model model;
@@ -30,47 +26,10 @@ public class Controller {
             this.view.setButtonListener(i, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    try {
-                        ResultSet rs = model.executeQueryForResultSet(queries[queryIndex]);
-
-                        Object[][] tableData = buildTableData(rs);
-                        String[] columnNames = getColumnNames(rs);
-
-                        view.updateTableData(tableData, columnNames);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
+                    String result = model.executeQuery(queries[queryIndex]);
+                    view.setResultText(result);
                 }
             });
         }
-    }
-
-    private Object[][] buildTableData(ResultSet rs) throws Exception {
-        List<Object[]> rows = new ArrayList<>();
-        ResultSetMetaData metaData = rs.getMetaData();
-        int columnCount = metaData.getColumnCount();
-
-        while (rs.next()) {
-            Object[] row = new Object[columnCount];
-            for (int i = 1; i <= columnCount; i++) {
-                row[i - 1] = rs.getObject(i); 
-            }
-            rows.add(row);
-        }
-
-        Object[][] tableData = new Object[rows.size()][columnCount];
-        return rows.toArray(tableData);
-    }
-
-    private String[] getColumnNames(ResultSet rs) throws Exception {
-        ResultSetMetaData metaData = rs.getMetaData();
-        int columnCount = metaData.getColumnCount();
-        String[] columnNames = new String[columnCount];
-
-        for (int i = 1; i <= columnCount; i++) {
-            columnNames[i - 1] = metaData.getColumnName(i);
-        }
-
-        return columnNames;
     }
 }

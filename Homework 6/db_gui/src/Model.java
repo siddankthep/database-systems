@@ -1,11 +1,11 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 
 public class Model {
     private Connection connection;
-    
 
     public Model() {
         try {
@@ -16,13 +16,25 @@ public class Model {
         }
     }
 
-    public ResultSet executeQueryForResultSet(String query) {
+    public String executeQuery(String query) {
+        StringBuilder result = new StringBuilder();
+        result.append("<html>");
         try {
             Statement stmt = connection.createStatement();
-            return stmt.executeQuery(query);
+            ResultSet rs = stmt.executeQuery(query);
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            while (rs.next()) {
+                for (int i = 1; i <= columnCount; i++) {
+                    result.append(rs.getString(i)).append(" | ");
+                }
+                result.append("<br>");
+            }
+            result.append("</html>");
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            result.append("Error executing query: ").append(e.getMessage());
         }
+        return result.toString();
     }
 }

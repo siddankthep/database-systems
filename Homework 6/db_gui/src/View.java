@@ -1,16 +1,11 @@
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class View extends JFrame {
     private JButton[] queryButtons = new JButton[9];
-    private JTable resultTable;
-    private JScrollPane scrollPane;
-    private String[] columnNames = {}; 
-    private Object[][] data = {}; 
-
+    private JLabel resultLabel = new JLabel("Query result will be displayed here");
     public View() {
         setTitle("HW6 Query Application");
         setSize(600, 400);
@@ -25,18 +20,16 @@ public class View extends JFrame {
             buttonPanel.add(queryButtons[i]);
         }
 
-        resultTable = new JTable(data, columnNames);
-        scrollPane = new JScrollPane(resultTable);
-
+        resultLabel.setVerticalAlignment(SwingConstants.TOP);
         add(buttonPanel, BorderLayout.NORTH);
-        add(scrollPane, BorderLayout.CENTER);
+        add(resultLabel, BorderLayout.CENTER);
     }
 
     public void setButtonListener(int buttonIndex, ActionListener listener) {
         queryButtons[buttonIndex].addActionListener(listener);
     }
 
-    public void updateTableData(Object[][] newData, String[] newColumnNames) {
-        resultTable.setModel(new DefaultTableModel(newData, newColumnNames));
+    public void setResultText(String text) {
+        resultLabel.setText(text);
     }
 }

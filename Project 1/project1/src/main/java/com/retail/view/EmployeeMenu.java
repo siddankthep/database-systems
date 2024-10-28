@@ -5,9 +5,11 @@ import javax.swing.*;
 import com.retail.model.dao.CustomerDAO;
 import com.retail.model.dao.OrderDAO;
 import com.retail.model.dao.ProductDAO;
+import com.retail.model.dao.ShipperDAO;
 import com.retail.model.services.CustomerService;
 import com.retail.model.services.OrderService;
 import com.retail.model.services.ProductService;
+import com.retail.model.services.ShipperService;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -30,7 +32,8 @@ public class EmployeeMenu extends JFrame {
         createOrderButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CreateOrderFrame(new OrderService(new OrderDAO()), new ProductService(new ProductDAO()));
+                new CreateOrderFrame(new OrderService(new OrderDAO()), new ProductService(new ProductDAO()),
+                        new ShipperService(new ShipperDAO()));
             }
         });
 

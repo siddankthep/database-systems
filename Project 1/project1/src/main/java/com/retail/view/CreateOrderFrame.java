@@ -3,10 +3,13 @@ package com.retail.view;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import org.antlr.v4.runtime.misc.IntegerStack;
+
 import com.retail.model.services.OrderService;
 import com.retail.model.services.ProductService;
+import com.retail.model.services.ShipperService;
 import com.retail.model.entities.OrderDetails;
-import com.retail.model.entities.Order;
+import com.retail.model.entities.Shipper;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -26,10 +29,13 @@ public class CreateOrderFrame extends JFrame {
     private JLabel assignedShipperLabel;
     private OrderService orderService;
     private ProductService productService;
+    private ShipperService shipperService;
+    private int shipperId;
 
-    public CreateOrderFrame(OrderService orderService, ProductService productService) {
+    public CreateOrderFrame(OrderService orderService, ProductService productService, ShipperService shipperService) {
         this.productService = productService;
         this.orderService = orderService;
+        this.shipperService = shipperService;
         setTitle("Create Order");
         setSize(800, 400);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -80,8 +86,9 @@ public class CreateOrderFrame extends JFrame {
         // Add listener to checkbox to assign shipper if selected
         shipOrderCheckbox.addActionListener(e -> {
             if (shipOrderCheckbox.isSelected()) {
-                assignShipper();
+                shipperId = assignShipper();
             } else {
+                shipperId = 3;
                 assignedShipperLabel.setText("Assigned Shipper: None");
             }
         });
@@ -95,7 +102,7 @@ public class CreateOrderFrame extends JFrame {
         setVisible(true);
     }
 
-    private class CreateOrderButtonListener implements ActionListener {
+    class CreateOrderButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (orderTableModel.getRowCount() == 0) {
@@ -107,7 +114,7 @@ public class CreateOrderFrame extends JFrame {
             try {
                 // Create Order object
                 Integer customerId = Integer.parseInt(customerIdField.getText());
-                int shipperId = shipOrderCheckbox.isSelected() ? 1 : null; // Mock shipper ID //TODO: Implement get random shipper ID
+                // Integer shipperId = shipperId; // shipperID
 
                 // Calculate total amount
                 String[] subtotalStrings = subtotalLabel.getText().split("\\$");
@@ -139,7 +146,7 @@ public class CreateOrderFrame extends JFrame {
         }
     }
 
-    private class AddProductButtonListener implements ActionListener {
+    class AddProductButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
@@ -147,7 +154,8 @@ public class CreateOrderFrame extends JFrame {
                 int quantity = Integer.parseInt(quantityField.getText());
 
                 // Fetch product details from the service
-                String productName = productService.getProductNameById(productId); // This should return the product name
+                String productName = productService.getProductNameById(productId); // This should return the product
+                                                                                   // name
                 double price = productService.getProductPriceById(productId); // This should return the product price
 
                 double total = price * quantity;
@@ -181,10 +189,20 @@ public class CreateOrderFrame extends JFrame {
         subtotalLabel.setText(String.format("Subtotal: $%.2f", subtotal));
     }
 
-    private void assignShipper() {
-        // Sample logic to automatically assign a shipper, replace with actual database
-        // query
-        String assignedShipper = "Auto-Assigned Shipper: Minh"; // Mock data for demonstration
-        assignedShipperLabel.setText(assignedShipper);
+    private int assignShipper() {
+
+        try {
+
+            int shipperId = shipperService.getRandomShipperId();
+            Shipper shipper = shipperService.getShipperById(shipperId);
+            String shipperName = shipper.getShipperName();
+            String assignedShipper = "Auto-Assigned Shipper: " + shipperName;
+            assignedShipperLabel.setText(assignedShipper);
+            return shipperId;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(CreateOrderFrame.this, "Error assigning shipper: " + ex.getMessage(),
+                    "Database Error", JOptionPane.ERROR_MESSAGE);
+            return 3;
+        }
     }
 }

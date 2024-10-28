@@ -4,8 +4,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+// import java.sql.PreparedStatement;
+// import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -58,28 +58,29 @@ public class DatabaseConnection {
     }
 
     // public static void main(String[] args) {
-    //     try {
-    //         Connection connection = DatabaseConnection.getConnection();
-    //         if (connection != null) {
-    //             String query = "SELECT * FROM Product WHERE price > ?";
-    //             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-    //                 preparedStatement.setDouble(1, 1.0);
-    //                 ResultSet resultSet = preparedStatement.executeQuery();
+    // try {
+    // Connection connection = DatabaseConnection.getConnection();
+    // if (connection != null) {
+    // String query = "SELECT * FROM Product WHERE price > ?";
+    // try (PreparedStatement preparedStatement =
+    // connection.prepareStatement(query)) {
+    // preparedStatement.setDouble(1, 1.0);
+    // ResultSet resultSet = preparedStatement.executeQuery();
 
-    //                 while (resultSet.next()) {
-    //                     System.out.println("Product ID: " + resultSet.getInt("ProductID"));
-    //                     System.out.println("Product Name: " + resultSet.getString("ProductName"));
-    //                     System.out.println("Product Price: " + resultSet.getDouble("Price"));
-    //                 }
-    //             } catch (SQLException e) {
-    //                 System.out.println("Error executing query: " + e.getMessage());
-    //             }
-    //             DatabaseConnection.closeConnection();
-    //         } else {
-    //             System.out.println("Failed to connect to the database.");
-    //         }
-    //     } catch (Exception e) {
-    //         System.out.println("Error during connection test: " + e.getMessage());
-    //     }
+    // while (resultSet.next()) {
+    // System.out.println("Product ID: " + resultSet.getInt("ProductID"));
+    // System.out.println("Product Name: " + resultSet.getString("ProductName"));
+    // System.out.println("Product Price: " + resultSet.getDouble("Price"));
+    // }
+    // } catch (SQLException e) {
+    // System.out.println("Error executing query: " + e.getMessage());
+    // }
+    // DatabaseConnection.closeConnection();
+    // } else {
+    // System.out.println("Failed to connect to the database.");
+    // }
+    // } catch (Exception e) {
+    // System.out.println("Error during connection test: " + e.getMessage());
+    // }
     // }
 }

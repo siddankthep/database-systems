@@ -3,84 +3,110 @@ package com.retail.view;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.TableRowSorter;
+import javax.swing.RowFilter;
+
+import com.retail.model.entities.Product;
+import com.retail.model.services.ProductService;
 
 public class CheckInventoryFrame extends JFrame {
     private JTable inventoryTable;
     private JTextField searchField;
+    private ProductService productService;
+    private List<Product> products;
+    private Object[][] data;
 
-    public CheckInventoryFrame() {
+    public CheckInventoryFrame(ProductService productService) {
+        this.productService = productService;
         setTitle("Check Inventory");
         setSize(600, 400);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        
+
         // Sample data, you would usually fetch this from your database
-        String[] columnNames = {"Product ID", "Product Name", "Stock Quantity"};
-        Object[][] data = {
-            {1, "Laptop", 50},
-            {2, "Smartphone", 100},
-            {3, "Coffee", 75},
-            {4, "Noodles", 200},
-            {5, "Cereal", 75},
-            {6, "Desk Chair", 30},
-        };
+        String[] columnNames = { "Product ID", "Product Name", "Unit Price", "Stock Quantity" };
+        try {
+            products = productService.getAllProducts();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        data = new Object[products.size()][4];
+
+        for (int i = 0; i < products.size(); i++) {
+            Product product = products.get(i);
+            // System.out.println("Product ID: " + product.getProductId() + "Product name: "
+            // + product.getProductName()
+            // + ", Price: " + product.getPrice()
+            // + ", Stock Quantity: " + product.getStockQuantity());
+
+            Object productID = (Object) product.getProductId();
+            Object productName = (Object) product.getProductName();
+            Object price = (Object) product.getPrice();
+            Object stockQuantity = (Object) product.getStockQuantity();
+
+            Object[] row = { productID, productName, price, stockQuantity };
+            data[i] = row;
+        }
+
+        // Object[][] data = {
+        // { 1, "Laptop", 50, 1 },
+        // { 2, "Smartphone", 100, 1 },
+        // { 3, "Coffee", 75, 1 },
+        // { 4, "Noodles", 200, 1 },
+        // { 5, "Cereal", 75, 1 },
+        // { 6, "Desk Chair", 30, 1 },
+        // };
 
         DefaultTableModel model = new DefaultTableModel(data, columnNames);
         inventoryTable = new JTable(model);
-        
+
         JScrollPane scrollPane = new JScrollPane(inventoryTable);
-        
+
         // Panel for search functionality
         JPanel searchPanel = new JPanel();
         searchField = new JTextField(20);
-        JButton searchButton = new JButton("Search");
-        
-        searchButton.addActionListener(new ActionListener() {
+
+        searchField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                String searchTerm = searchField.getText().toLowerCase();
-                filterTable(model, searchTerm);
+            public void insertUpdate(DocumentEvent e) {
+                filterTableSearch(model, searchField.getText().toLowerCase());
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                filterTableSearch(model, searchField.getText().toLowerCase());
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                filterTableSearch(model, searchField.getText().toLowerCase());
             }
         });
 
         searchPanel.add(new JLabel("Search Product By Name:"));
         searchPanel.add(searchField);
-        searchPanel.add(searchButton);
 
         add(searchPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
+        JButton makeSupplierOrderButton = new JButton("Make Supplier Order");
+        makeSupplierOrderButton.addActionListener(e -> new SupplierOrderFrame());
+        add(makeSupplierOrderButton, BorderLayout.SOUTH);
 
         setVisible(true);
     }
 
-    private void filterTable(DefaultTableModel model, String searchTerm) {
-        // Clear existing rows
-        model.setRowCount(0);
+    private void filterTableSearch(DefaultTableModel model, String searchTerm) {
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        inventoryTable.setRowSorter(sorter);
 
-        // Sample data for filtering, you would usually fetch this from your database
-        Object[][] allData = {
-            {1, "Laptop", 50},
-            {2, "Smartphone", 100},
-            {3, "Coffee", 75},
-            {4, "Noodles", 200},
-            {5, "Cereal", 75},
-            {6, "Desk Chair", 30},
-        };
-
-        // Add rows that match the search term
-        for (Object[] product : allData) {
-            String productName = (String) product[1];
-            if (productName.toLowerCase().contains(searchTerm)) {
-                model.addRow(product);
-            }
-        }
-
-        // If no products match, you can optionally show a message
-        if (model.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(this, "No products found matching: " + searchTerm);
+        if (searchTerm.trim().length() == 0) {
+            sorter.setRowFilter(null);
+        } else {
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchTerm));
         }
     }
 }

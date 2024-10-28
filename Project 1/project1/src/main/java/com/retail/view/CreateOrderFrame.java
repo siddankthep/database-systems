@@ -9,6 +9,7 @@ import com.retail.model.services.OrderService;
 import com.retail.model.services.ProductService;
 import com.retail.model.services.ShipperService;
 import com.retail.model.entities.OrderDetails;
+import com.retail.model.entities.Product;
 import com.retail.model.entities.Shipper;
 
 import java.awt.*;
@@ -102,7 +103,7 @@ public class CreateOrderFrame extends JFrame {
         setVisible(true);
     }
 
-    class CreateOrderButtonListener implements ActionListener {
+    class CreateOrderButtonListener implements ActionListener { 
         @Override
         public void actionPerformed(ActionEvent e) {
             if (orderTableModel.getRowCount() == 0) {
@@ -127,6 +128,12 @@ public class CreateOrderFrame extends JFrame {
                 for (int i = 0; i < orderTableModel.getRowCount(); i++) {
                     int productId = (int) orderTableModel.getValueAt(i, 0);
                     int quantity = (int) orderTableModel.getValueAt(i, 2);
+
+                    // Reduce stock quantity in product
+                    Product product = productService.getProductById(productId);
+                    product.setStockQuantity(product.getStockQuantity() - quantity);
+                    productService.updateProduct(product);
+
                     OrderDetails orderDetail = new OrderDetails(orderId, productId, quantity);
                     orderService.addOrderDetail(orderDetail);
                 }

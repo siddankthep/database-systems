@@ -1,6 +1,10 @@
 package com.retail.view;
 
 import javax.swing.*;
+
+import com.retail.model.dao.ProductDAO;
+import com.retail.model.services.ProductService;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,8 +22,7 @@ public class ManagerMenu extends JFrame {
 
         JButton createEmployeeButton = new JButton("Create Employee Account");
         JButton checkInventoryButton = new JButton("Check Inventory");
-        JButton supplierOrderButton = new JButton("Make Supplier Order");
-        
+
         createEmployeeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -30,20 +33,12 @@ public class ManagerMenu extends JFrame {
         checkInventoryButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CheckInventoryFrame();
+                new CheckInventoryFrame(new ProductService(new ProductDAO()));
             }
         });
-
-        supplierOrderButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new SupplierOrderFrame();
-            }
-        });
-
+        
         panel.add(createEmployeeButton);
         panel.add(checkInventoryButton);
-        panel.add(supplierOrderButton);
         add(panel);
 
         setVisible(true);

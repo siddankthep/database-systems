@@ -3,7 +3,6 @@ package com.retail.view;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-import org.antlr.v4.runtime.misc.IntegerStack;
 
 import com.retail.model.services.OrderService;
 import com.retail.model.services.ProductService;
@@ -31,7 +30,7 @@ public class CreateOrderFrame extends JFrame {
     private OrderService orderService;
     private ProductService productService;
     private ShipperService shipperService;
-    private int shipperId;
+    private int shipperId = 3;
 
     public CreateOrderFrame(OrderService orderService, ProductService productService, ShipperService shipperService) {
         this.productService = productService;
@@ -122,6 +121,7 @@ public class CreateOrderFrame extends JFrame {
                 String subtotalString = subtotalStrings[subtotalStrings.length - 1];
                 Double totalAmount = Double.parseDouble(subtotalString);
 
+                System.out.println("Shipper ID: " + shipperId); 
                 int orderId = orderService.createOrder(new Date(), customerId, shipperId, totalAmount, "Pending");
 
                 // Process each item in the order table
@@ -144,9 +144,11 @@ public class CreateOrderFrame extends JFrame {
                 orderTableModel.setRowCount(0);
                 updateSubtotal();
             } catch (SQLException ex) {
+                ex.printStackTrace();
                 JOptionPane.showMessageDialog(CreateOrderFrame.this, "Error creating order: "
                         + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
             } catch (IllegalArgumentException ex) {
+                ex.printStackTrace();
                 JOptionPane.showMessageDialog(CreateOrderFrame.this, ex.getMessage(), "Invalid Order Details",
                         JOptionPane.ERROR_MESSAGE);
             }

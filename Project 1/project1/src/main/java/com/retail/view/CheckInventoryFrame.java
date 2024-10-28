@@ -38,10 +38,6 @@ public class CheckInventoryFrame extends JFrame {
 
         for (int i = 0; i < products.size(); i++) {
             Product product = products.get(i);
-            // System.out.println("Product ID: " + product.getProductId() + "Product name: "
-            // + product.getProductName()
-            // + ", Price: " + product.getPrice()
-            // + ", Stock Quantity: " + product.getStockQuantity());
 
             Object productID = (Object) product.getProductId();
             Object productName = (Object) product.getProductName();
@@ -51,15 +47,6 @@ public class CheckInventoryFrame extends JFrame {
             Object[] row = { productID, productName, price, stockQuantity };
             data[i] = row;
         }
-
-        // Object[][] data = {
-        // { 1, "Laptop", 50, 1 },
-        // { 2, "Smartphone", 100, 1 },
-        // { 3, "Coffee", 75, 1 },
-        // { 4, "Noodles", 200, 1 },
-        // { 5, "Cereal", 75, 1 },
-        // { 6, "Desk Chair", 30, 1 },
-        // };
 
         DefaultTableModel model = new DefaultTableModel(data, columnNames);
         inventoryTable = new JTable(model);

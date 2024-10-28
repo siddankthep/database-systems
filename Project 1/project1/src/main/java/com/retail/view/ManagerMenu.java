@@ -3,7 +3,9 @@ package com.retail.view;
 import javax.swing.*;
 
 import com.retail.model.dao.ProductDAO;
+import com.retail.model.dao.UserAccountDAO;
 import com.retail.model.services.ProductService;
+import com.retail.model.services.UserAccountService;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,7 +16,7 @@ public class ManagerMenu extends JFrame {
     public ManagerMenu() {
         setTitle("Manager Menu");
         setSize(400, 300);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
         JPanel panel = new JPanel();
@@ -26,7 +28,7 @@ public class ManagerMenu extends JFrame {
         createEmployeeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CreateEmployeeFrame();
+                new CreateEmployeeFrame(new UserAccountService(new UserAccountDAO()));
             }
         });
 
@@ -36,7 +38,7 @@ public class ManagerMenu extends JFrame {
                 new CheckInventoryFrame(new ProductService(new ProductDAO()));
             }
         });
-        
+
         panel.add(createEmployeeButton);
         panel.add(checkInventoryButton);
         add(panel);

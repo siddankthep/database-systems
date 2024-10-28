@@ -20,7 +20,7 @@ public class EmployeeMenu extends JFrame {
     public EmployeeMenu() {
         setTitle("Employee Menu");
         setSize(400, 300);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
         JPanel panel = new JPanel();

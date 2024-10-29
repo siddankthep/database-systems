@@ -221,8 +221,8 @@ public class SupplierOrderFrame extends JFrame {
         subtotalLabel.setText(String.format("Subtotal: $%.2f", totalAmount));
     }
 
-    public static void main(String[] args) {
-        new SupplierOrderFrame(new SupplierOrderService(new SupplierOrderDAO()), new ProductService(new ProductDAO()),
-                new SupplierService(new SupplierDAO()));
-    }
+    // public static void main(String[] args) {
+    //     new SupplierOrderFrame(new SupplierOrderService(new SupplierOrderDAO()), new ProductService(new ProductDAO()),
+    //             new SupplierService(new SupplierDAO()));
+    // }
 }

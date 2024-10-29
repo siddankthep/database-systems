@@ -154,9 +154,9 @@ public class CheckInventoryFrame extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new CheckInventoryFrame(new ProductService(new ProductDAO()), new SupplierService(new SupplierDAO()));
-        });
-    }
+    // public static void main(String[] args) {
+    //     SwingUtilities.invokeLater(() -> {
+    //         new CheckInventoryFrame(new ProductService(new ProductDAO()), new SupplierService(new SupplierDAO()));
+    //     });
+    // }
 }

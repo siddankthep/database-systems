@@ -56,16 +56,4 @@ public class ShipperDAO {
         }
     }
 
-    public static void main(String[] args) {
-        ShipperDAO shipperDAO = new ShipperDAO();
-        try {
-            // String query = "SELECT * FROM Shipper WHERE ShipperID = 3";
-            Shipper shipper = shipperDAO.getById(3);
-            System.out.println("Shipper ID: " + shipper.getShipperId() + " Shipper Name: " + shipper.getShipperName()
-                    + " Shipper Service ID: " + shipper.getShipperServiceId() + " Contact: " + shipper.getContact());
-            // System.out.println(shipperDAO.fetchRandomShipperId());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }

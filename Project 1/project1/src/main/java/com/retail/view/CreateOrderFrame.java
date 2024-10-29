@@ -296,8 +296,8 @@ public class CreateOrderFrame extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        new CreateOrderFrame(new OrderService(new OrderDAO()), new ProductService(new ProductDAO()),
-                new ShipperService(new ShipperDAO()), new CustomerService(new CustomerDAO()));
-    }
+    // public static void main(String[] args) {
+    //     new CreateOrderFrame(new OrderService(new OrderDAO()), new ProductService(new ProductDAO()),
+    //             new ShipperService(new ShipperDAO()), new CustomerService(new CustomerDAO()));
+    // }
 }

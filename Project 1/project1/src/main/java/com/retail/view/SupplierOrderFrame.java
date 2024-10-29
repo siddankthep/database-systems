@@ -30,6 +30,7 @@ public class SupplierOrderFrame extends JFrame {
     private ProductService productService;
     private SupplierService supplierService;
     private int supplierId = -1;
+    private double totalAmount = 0.0;
 
     public SupplierOrderFrame(SupplierOrderService supplierOrderService, ProductService productService,
             SupplierService supplierService) {
@@ -59,7 +60,7 @@ public class SupplierOrderFrame extends JFrame {
         addButton.addActionListener(new AddProductButtonListener());
         createOrderButton = new JButton("Create Order");
         createOrderButton.addActionListener(new CreateSupplierOrderButtonListener());
-        createOrderButton.setPreferredSize(new Dimension(200, 25));
+        // createOrderButton.setPreferredSize(new Dimension(200, 25));
 
         // Set horizontal group
         layout.setHorizontalGroup(
@@ -95,7 +96,7 @@ public class SupplierOrderFrame extends JFrame {
         // Subtotal Panel
         JPanel subtotalPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
-        subtotalLabel = new JLabel("Subtotal: $0.00");
+        subtotalLabel = new JLabel(String.format("Subtotal: $%.2f", totalAmount));
         subtotalPanel.add(subtotalLabel);
         add(subtotalPanel, BorderLayout.SOUTH);
 
@@ -110,9 +111,7 @@ public class SupplierOrderFrame extends JFrame {
                 return;
             }
 
-            // Create an order and add order details
             try {
-                // Create Order object
 
                 // Calculate total amount
                 String[] subtotalStrings = subtotalLabel.getText().split("\\$");
@@ -131,15 +130,15 @@ public class SupplierOrderFrame extends JFrame {
                     product.setStockQuantity(product.getStockQuantity() + quantity);
                     productService.updateProduct(product);
 
-                    SupplierOrderDetails orderDetail = new SupplierOrderDetails(0, supplierOrderId, productId,
+                    supplierOrderService.addSupplierOrderDetail(supplierOrderId, productId,
                             quantity);
-                    supplierOrderService.addSupplierOrderDetail(orderDetail);
                 }
 
                 JOptionPane.showMessageDialog(SupplierOrderFrame.this, "Order created successfully!");
 
                 // Clear the order table and reset the subtotal
                 orderTableModel.setRowCount(0);
+                totalAmount = 0.0;
                 updateSubtotal();
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -161,13 +160,17 @@ public class SupplierOrderFrame extends JFrame {
                 int quantity = Integer.parseInt(quantityField.getText());
 
                 Product product = productService.getProductById(productId);
+                if (product == null) {
+                    JOptionPane.showMessageDialog(SupplierOrderFrame.this, "Product not found.");
+                    return;
+                }
 
                 // Fetch product details from the service
                 String productName = product.getProductName(); // This should return the product
                                                                // name
                 double price = product.getPrice(); // This should return the product price
 
-                double total = price * quantity;
+                double total = Math.round(price * quantity * 100.0) / 100.0;
 
                 // Fetch supplier details
                 int currentSupplierId = product.getSupplierId();
@@ -194,7 +197,7 @@ public class SupplierOrderFrame extends JFrame {
                 orderTableModel.addRow(row);
 
                 // Update the subtotal
-                updateSubtotal();
+                updateSubtotal(); // TODO: Check if this works
 
                 // Clear input fields
                 productIdField.setText("");
@@ -211,11 +214,11 @@ public class SupplierOrderFrame extends JFrame {
     }
 
     private void updateSubtotal() {
-        double subtotal = 0.0;
+        // double subtotal = 0.0;
         for (int i = 0; i < orderTableModel.getRowCount(); i++) {
-            subtotal += (double) orderTableModel.getValueAt(i, 4);
+            totalAmount += (double) orderTableModel.getValueAt(i, 5);
         }
-        subtotalLabel.setText(String.format("Subtotal: $%.2f", subtotal));
+        subtotalLabel.setText(String.format("Subtotal: $%.2f", totalAmount));
     }
 
     public static void main(String[] args) {

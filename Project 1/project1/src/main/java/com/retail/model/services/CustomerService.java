@@ -26,4 +26,12 @@ public class CustomerService {
         // Save customer to the database
         customerDAO.insert(customer);
     }
+
+    public Customer getCustomerById(int customerId) throws SQLException {
+        if (customerId <= 0) {
+            throw new IllegalArgumentException("Invalid customer ID.");
+        }
+
+        return customerDAO.getById(customerId);
+    }
 }

@@ -33,7 +33,7 @@ public class EmployeeMenu extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new CreateOrderFrame(new OrderService(new OrderDAO()), new ProductService(new ProductDAO()),
-                        new ShipperService(new ShipperDAO()));
+                        new ShipperService(new ShipperDAO()), new CustomerService(new CustomerDAO()));
             }
         });
 

@@ -15,7 +15,8 @@ public class SupplierOrderService {
     }
 
     public int createSupplierOrder(int supplierId, java.util.Date orderDate, double totalAmount) throws SQLException {
-        System.out.println("Supplier ID: " + supplierId + " Order Date: " + orderDate + " Total Amount: " + totalAmount);
+        System.out
+                .println("Supplier ID: " + supplierId + " Order Date: " + orderDate + " Total Amount: " + totalAmount);
         if (supplierId <= 0 || orderDate == null || totalAmount <= 0) {
             throw new IllegalArgumentException("Invalid supplier order details.");
         }
@@ -28,7 +29,11 @@ public class SupplierOrderService {
         return orderId;
     }
 
-    public void addSupplierOrderDetail(SupplierOrderDetails orderDetail) throws SQLException {
+    public void addSupplierOrderDetail(int supplierOrderId, int productId, int quantity) throws SQLException {
+        if (supplierOrderId <= 0 || productId <= 0 || quantity <= 0) {
+            throw new IllegalArgumentException("Invalid supplier order details.");
+        }
+        SupplierOrderDetails orderDetail = new SupplierOrderDetails(0, supplierOrderId, productId, quantity);
         supplierOrderDAO.addOrderDetail(orderDetail);
     }
 }

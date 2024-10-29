@@ -1,18 +1,25 @@
 package com.retail.view;
 
 import javax.swing.*;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
+import com.retail.model.services.CustomerService;
 import com.retail.model.services.OrderService;
 import com.retail.model.services.ProductService;
 import com.retail.model.services.ShipperService;
+import com.retail.model.dao.CustomerDAO;
 import com.retail.model.dao.OrderDAO;
 import com.retail.model.dao.ProductDAO;
 import com.retail.model.dao.ShipperDAO;
+import com.retail.model.entities.Customer;
 import com.retail.model.entities.OrderDetails;
 import com.retail.model.entities.Product;
 import com.retail.model.entities.Shipper;
 
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,48 +36,96 @@ public class CreateOrderFrame extends JFrame {
     private JCheckBox shipOrderCheckbox;
     private JButton createOrderButton;
     private JLabel assignedShipperLabel;
+    private JLabel customerNameLabel;
     private OrderService orderService;
     private ProductService productService;
     private ShipperService shipperService;
+    private CustomerService customerService;
     private int shipperId = 1; // Default null shipper ID
 
-    public CreateOrderFrame(OrderService orderService, ProductService productService, ShipperService shipperService) {
+    public CreateOrderFrame(OrderService orderService, ProductService productService, ShipperService shipperService,
+            CustomerService customerService) {
+        this.customerService = customerService;
         this.productService = productService;
         this.orderService = orderService;
         this.shipperService = shipperService;
         setTitle("Create Order");
-        setSize(800, 400);
+        setSize(900, 400);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
         // Input Panel for Product ID and Quantity
-        JPanel inputPanel = new JPanel(new GridLayout(2, 5));
+        JPanel inputPanel = new JPanel();
+        GroupLayout layout = new GroupLayout(inputPanel);
+        inputPanel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
 
-        inputPanel.add(new JLabel("Product ID:"));
+        JLabel productIdLabel = new JLabel("Product ID:");
         productIdField = new JTextField();
-        inputPanel.add(productIdField);
+        productIdField.setPreferredSize(new Dimension(50, 25));
 
-        inputPanel.add(new JLabel("Quantity:"));
+        JLabel quantityLabel = new JLabel("Quantity:");
         quantityField = new JTextField();
-        inputPanel.add(quantityField);
+        quantityField.setPreferredSize(new Dimension(50, 25));
 
-        inputPanel.add(new JLabel("Customer ID:"));
+        JLabel customerIdLabel = new JLabel("Customer ID:");
         customerIdField = new JTextField();
-        inputPanel.add(customerIdField);
+        customerIdField.setPreferredSize(new Dimension(50, 25));
 
-        inputPanel.add(new JLabel(""));
-        inputPanel.add(new JLabel(""));
+        customerIdField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                fetchCustomerName();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                fetchCustomerName();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                fetchCustomerName();
+            }
+
+        });
 
         JButton addButton = new JButton("Add to Order");
         addButton.addActionListener(new AddProductButtonListener());
-        inputPanel.add(addButton);
 
         shipOrderCheckbox = new JCheckBox("Ship this order");
         createOrderButton = new JButton("Create Order");
         createOrderButton.addActionListener(new CreateOrderButtonListener());
 
-        inputPanel.add(createOrderButton);
-        inputPanel.add(shipOrderCheckbox);
+        // Set horizontal group
+        layout.setHorizontalGroup(
+                layout.createSequentialGroup()
+                        .addComponent(productIdLabel)
+                        .addComponent(productIdField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                GroupLayout.PREFERRED_SIZE)
+                        .addComponent(quantityLabel)
+                        .addComponent(quantityField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                GroupLayout.PREFERRED_SIZE)
+                        .addComponent(customerIdLabel)
+                        .addComponent(customerIdField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+                                GroupLayout.PREFERRED_SIZE)
+                        .addComponent(addButton)
+                        .addComponent(createOrderButton)
+                        .addComponent(shipOrderCheckbox));
+
+        // Set vertical group
+        layout.setVerticalGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(productIdLabel)
+                        .addComponent(productIdField)
+                        .addComponent(quantityLabel)
+                        .addComponent(quantityField)
+                        .addComponent(customerIdLabel)
+                        .addComponent(customerIdField)
+                        .addComponent(addButton)
+                        .addComponent(createOrderButton)
+                        .addComponent(shipOrderCheckbox));
 
         add(inputPanel, BorderLayout.NORTH);
 
@@ -95,6 +150,10 @@ public class CreateOrderFrame extends JFrame {
             }
         });
 
+        customerNameLabel = new JLabel("Customer Name: ");
+
+        subtotalPanel.add(customerNameLabel);
+        subtotalPanel.add(new JLabel("             |             "));
         subtotalPanel.add(assignedShipperLabel);
         subtotalPanel.add(new JLabel("             |             "));
         subtotalLabel = new JLabel("Subtotal: $0.00");
@@ -102,6 +161,26 @@ public class CreateOrderFrame extends JFrame {
         add(subtotalPanel, BorderLayout.SOUTH);
 
         setVisible(true);
+    }
+
+    private void fetchCustomerName() {
+        String customerId = customerIdField.getText();
+        if (!customerId.isEmpty()) {
+            // Replace this with actual logic to fetch customer name from database or
+            // service
+            try {
+                Integer.parseInt(customerId);
+                String customerName = customerService.getCustomerById(Integer.parseInt(customerId)).getName();
+                customerNameLabel.setText("Customer Name: " + customerName);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            } catch (IllegalArgumentException ex) {
+                ex.printStackTrace();
+                customerNameLabel.setText("Customer Name: ");
+            }
+        } else {
+            customerNameLabel.setText("Customer Name: ");
+        }
     }
 
     class CreateOrderButtonListener implements ActionListener {
@@ -166,7 +245,7 @@ public class CreateOrderFrame extends JFrame {
 
                 // Fetch product details from the service
                 String productName = productService.getProductNameById(productId); // This should return the product
-                                                                                   // name
+                // name
                 double price = productService.getProductPriceById(productId); // This should return the product price
 
                 double total = price * quantity;
@@ -219,6 +298,6 @@ public class CreateOrderFrame extends JFrame {
 
     public static void main(String[] args) {
         new CreateOrderFrame(new OrderService(new OrderDAO()), new ProductService(new ProductDAO()),
-                new ShipperService(new ShipperDAO()));
+                new ShipperService(new ShipperDAO()), new CustomerService(new CustomerDAO()));
     }
 }

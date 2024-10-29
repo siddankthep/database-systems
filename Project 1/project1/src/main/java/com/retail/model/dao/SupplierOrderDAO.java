@@ -7,21 +7,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.retail.model.entities.Order;
-import com.retail.model.entities.OrderDetails;
+import com.retail.model.entities.SupplierOrder;
+import com.retail.model.entities.SupplierOrderDetails;
 import com.retail.utils.DatabaseConnection;
 
-public class OrderDAO {
+public class SupplierOrderDAO {
 
-    public int insert(Order order) throws SQLException {
-        String sql = "INSERT INTO `Order` (OrderDate, CustomerId, ShipperId, TotalAmount) VALUES (?, ?, ?, ?)";
+    public int insert(SupplierOrder order) throws SQLException {
+        String sql = "INSERT INTO SupplierOrder (SupplierId, orderDate, totalAmount) VALUES (?, ?, ?)";
         Connection connection = DatabaseConnection.getConnection();
         try (
                 PreparedStatement stmt = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            stmt.setDate(1, new java.sql.Date(order.getOrderDate().getTime()));
-            stmt.setInt(2, order.getCustomerId());
-            stmt.setInt(3, order.getShipperId());
-            stmt.setDouble(4, order.getTotalAmount());
+                    stmt.setInt(1, order.getSupplierId());
+                    stmt.setDate(2, new java.sql.Date(order.getOrderDate().getTime()));
+            stmt.setDouble(3, order.getTotalAmount());
             stmt.executeUpdate();
 
             // Get the generated order ID
@@ -34,31 +33,30 @@ public class OrderDAO {
         }
     }
 
-    public void addOrderDetail(OrderDetails orderDetail) throws SQLException {
-        String sql = "INSERT INTO OrderDetails (OrderId, ProductID, Quantity) VALUES (?, ?, ?)";
+    public void addOrderDetail(SupplierOrderDetails orderDetail) throws SQLException {
+        String sql = "INSERT INTO SupplierOrderDetails (SupplierOrderId, productId, quantity) VALUES (?, ?, ?)";
         Connection connection = DatabaseConnection.getConnection();
         try (
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, orderDetail.getOrderId());
+            stmt.setInt(1, orderDetail.getSupplierOrderId());
             stmt.setInt(2, orderDetail.getProductId());
             stmt.setInt(3, orderDetail.getQuantity());
             stmt.executeUpdate();
         }
     }
 
-    public List<Order> getAllOrders() throws SQLException {
-        List<Order> orders = new ArrayList<>();
-        String sql = "SELECT * FROM `Order`";
+    public List<SupplierOrder> getAllOrders() throws SQLException {
+        List<SupplierOrder> orders = new ArrayList<>();
+        String sql = "SELECT * FROM SupplierOrder";
         Connection connection = DatabaseConnection.getConnection();
         try (
                 PreparedStatement stmt = connection.prepareStatement(sql);
                 ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
-                Order order = new Order(
-                        rs.getInt("orderId"),
+                SupplierOrder order = new SupplierOrder(
+                        rs.getInt("SupplierOrderId"),
+                        rs.getInt("SupplierId"),
                         rs.getDate("orderDate"),
-                        rs.getInt("customerId"),
-                        rs.getInt("shipperId"),
                         rs.getDouble("totalAmount"));
                 orders.add(order);
             }
@@ -66,18 +64,18 @@ public class OrderDAO {
         return orders;
     }
 
-    public List<OrderDetails> getOrderDetails(int orderId) throws SQLException {
-        List<OrderDetails> orderDetailsList = new ArrayList<>();
-        String sql = "SELECT * FROM OrderDetails WHERE orderId = ?";
+    public List<SupplierOrderDetails> getOrderDetails(int supplierOrderId) throws SQLException {
+        List<SupplierOrderDetails> orderDetailsList = new ArrayList<>();
+        String sql = "SELECT * FROM SupplierOrderDetails WHERE SupplierOrderId = ?";
         Connection connection = DatabaseConnection.getConnection();
         try (
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, orderId);
+            stmt.setInt(1, supplierOrderId);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    OrderDetails orderDetails = new OrderDetails(
-                            rs.getInt("orderDetailId"),
-                            rs.getInt("orderId"),
+                    SupplierOrderDetails orderDetails = new SupplierOrderDetails(
+                            rs.getInt("SupplierOrderDetailId"),
+                            rs.getInt("SupplierOrderId"),
                             rs.getInt("productId"),
                             rs.getInt("quantity"));
                     orderDetailsList.add(orderDetails);

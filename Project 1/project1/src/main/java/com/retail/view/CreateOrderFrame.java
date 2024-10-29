@@ -3,10 +3,12 @@ package com.retail.view;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-
 import com.retail.model.services.OrderService;
 import com.retail.model.services.ProductService;
 import com.retail.model.services.ShipperService;
+import com.retail.model.dao.OrderDAO;
+import com.retail.model.dao.ProductDAO;
+import com.retail.model.dao.ShipperDAO;
 import com.retail.model.entities.OrderDetails;
 import com.retail.model.entities.Product;
 import com.retail.model.entities.Shipper;
@@ -30,7 +32,7 @@ public class CreateOrderFrame extends JFrame {
     private OrderService orderService;
     private ProductService productService;
     private ShipperService shipperService;
-    private int shipperId = 3;
+    private int shipperId = 1; // Default null shipper ID
 
     public CreateOrderFrame(OrderService orderService, ProductService productService, ShipperService shipperService) {
         this.productService = productService;
@@ -56,19 +58,19 @@ public class CreateOrderFrame extends JFrame {
         customerIdField = new JTextField();
         inputPanel.add(customerIdField);
 
+        inputPanel.add(new JLabel(""));
+        inputPanel.add(new JLabel(""));
+
         JButton addButton = new JButton("Add to Order");
         addButton.addActionListener(new AddProductButtonListener());
         inputPanel.add(addButton);
-
-        inputPanel.add(new JLabel(""));
-        inputPanel.add(new JLabel(""));
 
         shipOrderCheckbox = new JCheckBox("Ship this order");
         createOrderButton = new JButton("Create Order");
         createOrderButton.addActionListener(new CreateOrderButtonListener());
 
-        inputPanel.add(shipOrderCheckbox);
         inputPanel.add(createOrderButton);
+        inputPanel.add(shipOrderCheckbox);
 
         add(inputPanel, BorderLayout.NORTH);
 
@@ -88,7 +90,7 @@ public class CreateOrderFrame extends JFrame {
             if (shipOrderCheckbox.isSelected()) {
                 shipperId = assignShipper();
             } else {
-                shipperId = 3;
+                shipperId = 1;
                 assignedShipperLabel.setText("Assigned Shipper: None");
             }
         });
@@ -102,7 +104,7 @@ public class CreateOrderFrame extends JFrame {
         setVisible(true);
     }
 
-    class CreateOrderButtonListener implements ActionListener { 
+    class CreateOrderButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (orderTableModel.getRowCount() == 0) {
@@ -121,8 +123,8 @@ public class CreateOrderFrame extends JFrame {
                 String subtotalString = subtotalStrings[subtotalStrings.length - 1];
                 Double totalAmount = Double.parseDouble(subtotalString);
 
-                System.out.println("Shipper ID: " + shipperId); 
-                int orderId = orderService.createOrder(new Date(), customerId, shipperId, totalAmount, "Pending");
+                System.out.println("Shipper ID: " + shipperId);
+                int orderId = orderService.createOrder(new Date(), customerId, shipperId, totalAmount);
 
                 // Process each item in the order table
                 for (int i = 0; i < orderTableModel.getRowCount(); i++) {
@@ -211,7 +213,12 @@ public class CreateOrderFrame extends JFrame {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(CreateOrderFrame.this, "Error assigning shipper: " + ex.getMessage(),
                     "Database Error", JOptionPane.ERROR_MESSAGE);
-            return 3;
+            return 1;
         }
+    }
+
+    public static void main(String[] args) {
+        new CreateOrderFrame(new OrderService(new OrderDAO()), new ProductService(new ProductDAO()),
+                new ShipperService(new ShipperDAO()));
     }
 }

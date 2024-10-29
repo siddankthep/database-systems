@@ -16,18 +16,16 @@ public class OrderService {
         this.orderDAO = orderDAO;
     }
 
-    public int createOrder(Date orderDate, int customerId, int shipperId, double totalAmount,
-            String paymentStatus) throws SQLException {
+    public int createOrder(Date orderDate, int customerId, int shipperId, double totalAmount) throws SQLException {
 
-        if (orderDate == null || customerId <= 0 || shipperId < 0 || totalAmount <= 0
-                || paymentStatus.trim().isEmpty()) {
+        if (orderDate == null || customerId <= 0 || shipperId < 0 || totalAmount <= 0) {
             System.out.println("Date: " + orderDate + " Customer ID: " + customerId + " Shipper ID: " + shipperId
-                    + " Total Amount: " + totalAmount + " Payment Status: " + paymentStatus);
+                    + " Total Amount: " + totalAmount);
             throw new IllegalArgumentException("Invalid order details.");
         }
 
         // Create a new Order object
-        Order order = new Order(0, orderDate, customerId, shipperId, totalAmount, paymentStatus);
+        Order order = new Order(0, orderDate, customerId, shipperId, totalAmount);
 
         // Call DAO to insert order
         int orderId = orderDAO.insert(order);

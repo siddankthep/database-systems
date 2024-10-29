@@ -8,15 +8,13 @@ public class Order {
     private int customerId;
     private int shipperId;
     private double totalAmount;
-    private String paymentStatus;
 
-    public Order(int orderId, Date orderDate, int customerId, int shipperId, double totalAmount, String paymentStatus) {
+    public Order(int orderId, Date orderDate, int customerId, int shipperId, double totalAmount) {
         this.orderId = orderId;
         this.orderDate = orderDate;
         this.customerId = customerId;
         this.shipperId = shipperId;
         this.totalAmount = totalAmount;
-        this.paymentStatus = paymentStatus;
     }
 
     public int getOrderId() {
@@ -59,14 +57,6 @@ public class Order {
         this.totalAmount = totalAmount;
     }
 
-    public String getPaymentStatus() {
-        return paymentStatus;
-    }
-
-    public void setPaymentStatus(String paymentStatus) {
-        this.paymentStatus = paymentStatus;
-    }
-
     @Override
     public String toString() {
         return "Order{" +
@@ -74,8 +64,7 @@ public class Order {
                 ", orderDate=" + orderDate +
                 ", customerId=" + customerId +
                 ", shipperId=" + shipperId +
-                ", totalAmount=" + totalAmount +
-                ", paymentStatus='" + paymentStatus + '\'' +
+                ", totalAmount=" + totalAmount + '\'' +
                 '}';
     }
 }

@@ -21,6 +21,7 @@ public class LoginFrame extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         GridBagConstraints c = new GridBagConstraints();
         this.setLayout(new GridBagLayout());
+        setLocationRelativeTo(null);
 
         c.insets = new Insets(5, 0, 0, 0);
         c.gridx = 0;
@@ -50,7 +51,7 @@ public class LoginFrame extends JFrame {
                 if (userAccountService.authenticate(username, password)) {
                     JOptionPane.showMessageDialog(LoginFrame.this, "Login successful!");
                     int role = userAccountService.getUserRole(username);
-                    if (role == 2) {
+                    if (role == 1) {
                         new EmployeeMenu();
                     } else {
                         new ManagerMenu();

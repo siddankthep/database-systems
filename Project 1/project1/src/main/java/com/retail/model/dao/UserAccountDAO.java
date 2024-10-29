@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 
 import com.retail.model.entities.UserAccount;
 import com.retail.utils.DatabaseConnection;
@@ -45,17 +44,6 @@ public class UserAccountDAO {
             statement.setInt(3, user.getRoleId());
             statement.setDate(4, new java.sql.Date(user.getCreatedAt().getTime()));
             statement.setNull(5, java.sql.Types.DATE);
-            statement.executeUpdate();
-        }
-    }
-
-    // Update user last login time
-    public void updateUserLastLogin(UserAccount user) throws SQLException {
-        String query = "UPDATE UserAccount SET LastLogin = ? WHERE UserID = ?";
-        Connection connection = DatabaseConnection.getConnection();
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setDate(1, new java.sql.Date(user.getLastLogin().getTime()));
-            statement.setInt(2, user.getUserId());
             statement.executeUpdate();
         }
     }

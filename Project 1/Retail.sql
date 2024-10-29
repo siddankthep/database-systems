@@ -19,8 +19,7 @@ CREATE TABLE `Order` (
   `OrderDate` DATE,
   `CustomerID` INT,
   `ShipperID` INT,
-  `TotalAmount` DECIMAL(10,2),
-  `PaymentStatus` VARCHAR(20)
+  `TotalAmount` DECIMAL(10,2)
 );
 
 CREATE TABLE `OrderDetails` (
@@ -36,9 +35,7 @@ CREATE TABLE `Supplier` (
   `ProductCategory` VARCHAR(50),
   `ContactPerson` VARCHAR(100),
   `Address` VARCHAR(255),
-  `Phone` VARCHAR(20),
-  `PaymentDueDate` VARCHAR(100),
-  `DeliveryTime` VARCHAR(50)
+  `Phone` VARCHAR(20)
 );
 
 CREATE TABLE `SupplierOrder` (
@@ -103,9 +100,7 @@ ALTER TABLE `Shipper` ADD FOREIGN KEY (`ShipperServiceID`) REFERENCES `ShipperSe
 
 ALTER TABLE `UserAccount` ADD FOREIGN KEY (`RoleID`) REFERENCES `UserRole` (`RoleID`);
 
-
--- The dummy data for the tables was created by ChatGPT
-
+-- Dummy data was created by ChatGPT
 -- Insert dummy data into Customer table
 INSERT INTO Customer (Name, Phone, Address) VALUES
 ('John Doe', '1234567890', '123 Elm St, Springfield'),
@@ -113,44 +108,45 @@ INSERT INTO Customer (Name, Phone, Address) VALUES
 ('Alice Johnson', '5551234567', '789 Pine St, Springfield');
 
 -- Insert dummy data into Supplier table
-INSERT INTO Supplier (SupplierName, ProductCategory, ContactPerson, Address, Phone, PaymentDueDate, DeliveryTime) VALUES
-('ABC Supplies', 'Electronics', 'Mike Brown', '101 Maple St, Springfield', '1231231234', '2024-11-01', '2 days'),
-('XYZ Traders', 'Groceries', 'Sara White', '202 Birch St, Springfield', '4321432143', '2024-11-05', '1 day');
-
--- Insert dummy data into Product table
-INSERT INTO Product (ProductName, Price, Unit, SupplierID, StockQuantity) VALUES
-('Laptop', 999.99, 1, 1, 50),
-('Smartphone', 599.99, 1, 1, 100),
-('Coffee', 19.99, 1, 2, 75),
-('Noodles', 2.99, 1, 2, 200),
-('Cereal', 29.99, 1, 2, 75),
-('Desk Chair', 89.99, 1, 1, 30);
+INSERT INTO Supplier (SupplierName, ProductCategory, ContactPerson, Address, Phone) VALUES
+('ABC Supplies', 'Electronics', 'Mike Brown', '101 Maple St, Springfield', '1231231234'),
+('XYZ Traders', 'Groceries', 'Sara White', '202 Birch St, Springfield', '4321432143');
 
 -- Insert dummy data into ShipperService table
 INSERT INTO ShipperService (ShippingServiceName, ShippingFeePerKM, ShippingRange) VALUES
-('Ahamove', 10, 'Local'),
-('GHTK', 20, 'Regional');
+('Express Shipping', 10, 'Local'),
+('Standard Shipping', 5, 'National');
 
 -- Insert dummy data into Shipper table
 INSERT INTO Shipper (ShipperServiceID, ShipperName, ContactPhone) VALUES
-(1, 'Minh', '1112223333'),
-(2, 'Thang', '4445556666');
+(NULL, NULL, NULL),
+(1, 'Fast Delivery', '1112223333'),
+(2, 'Quick Ship', '4445556666');
+
+-- Insert dummy data into Product table
+INSERT INTO Product (ProductName, Price, Unit, SupplierID, StockQuantity) VALUES
+('Tablet', 299.99, 1, 1, 120),
+('Headphones', 49.99, 1, 1, 200),
+('Wireless Mouse', 19.99, 1, 1, 150),
+('Bluetooth Speaker', 79.99, 1, 1, 80),
+('Electric Kettle', 29.99, 1, 2, 90),
+('Blender', 39.99, 1, 2, 60),
+('Air Fryer', 99.99, 1, 2, 70),
+('Vacuum Cleaner', 149.99, 1, 2, 50),
+('Monitor', 129.99, 1, 1, 100),
+('USB-C Cable', 9.99, 1, 1, 500);
+
 
 -- Insert dummy data into Order table
-INSERT INTO `Order` (OrderDate, CustomerID, ShipperID, TotalAmount, PaymentStatus) VALUES
-('2024-10-01', 1, 1, 1599.98, 'Completed'),
-('2024-10-02', 2, 2, 639.98, 'Pending');
+INSERT INTO `Order` (OrderDate, CustomerID, ShipperID, TotalAmount) VALUES
+('2024-10-01', 1, 1, 1599.98),
+('2024-10-02', 2, 2, 639.98);
 
 -- Insert dummy data into OrderDetails table
 INSERT INTO OrderDetails (OrderID, ProductID, Quantity) VALUES
 (1, 1, 1),
 (1, 2, 1),
 (2, 3, 2);
-
--- Insert dummy data into Invoice table
-INSERT INTO Invoice (CustomerID, OrderID, InvoiceDate, DueDate, TotalAmount, PaymentStatus) VALUES
-(1, 1, '2024-10-01', '2024-10-15', 1599.98, 'Completed'),
-(2, 2, '2024-10-02', '2024-10-16', 639.98, 'Pending');
 
 -- Insert dummy data into SupplierOrder table
 INSERT INTO SupplierOrder (SupplierID, OrderDate, TotalAmount) VALUES
@@ -163,24 +159,14 @@ INSERT INTO SupplierOrderDetails (SupplierOrderID, ProductID, Quantity) VALUES
 (1, 2, 20),
 (2, 3, 15);
 
--- Insert dummy data into InventoryTransaction table
-INSERT INTO InventoryTransaction (ProductID, QuantityChange, TransactionType, TransactionDate, Notes) VALUES
-(1, 10, 'Restock', '2024-10-05', 'Restocked 10 Laptops'),
-(2, -5, 'Sale', '2024-10-02', 'Sold 5 Smartphones');
-
--- Insert dummy data into Payment table
-INSERT INTO Payment (InvoiceID, PaymentDate, PaymentAmount, PaymentMethod, PaymentStatus) VALUES
-(1, '2024-10-10', 1599.98, 'Credit Card', 'Completed'),
-(2, '2024-10-12', 639.98, 'Cash', 'Pending');
-
 -- Insert dummy data into UserRole table
 INSERT INTO UserRole (RoleName) VALUES
-('Customer'),
 ('Employee'),
 ('Manager');
 
 -- Insert dummy data into UserAccount table
 INSERT INTO UserAccount (Username, PasswordHash, RoleID, CreatedAt, LastLogin) VALUES
-('jdoe', 'password', 1, '2024-09-01', '2024-10-10'),
 ('jsmith', 'password', 2, '2024-09-05', '2024-10-11'),
-('admin', 'password', 3, '2024-09-10', '2024-10-12');
+('admin', 'password', 2, '2024-09-10', '2024-10-12');
+
+

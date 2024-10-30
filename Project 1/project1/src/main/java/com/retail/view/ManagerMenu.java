@@ -2,13 +2,6 @@ package com.retail.view;
 
 import javax.swing.*;
 
-import com.retail.model.dao.ProductDAO;
-import com.retail.model.dao.SupplierDAO;
-import com.retail.model.dao.UserAccountDAO;
-import com.retail.model.services.ProductService;
-import com.retail.model.services.SupplierService;
-import com.retail.model.services.UserAccountService;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,7 +23,7 @@ public class ManagerMenu extends JFrame {
         createEmployeeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CreateEmployeeFrame(new UserAccountService(new UserAccountDAO()));
+                new CreateEmployeeFrame();
             }
         });
 

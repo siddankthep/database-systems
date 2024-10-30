@@ -2,20 +2,19 @@ package com.retail.view;
 
 import javax.swing.*;
 
-import com.retail.model.services.CustomerService;
+import com.retail.controller.CustomerController;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 
 public class CreateCustomerFrame extends JFrame {
     private JTextField nameField, phoneField, addressField;
     private JButton createButton, cancelButton;
-    private CustomerService customerService;
+    private CustomerController customerController;
 
-    public CreateCustomerFrame(CustomerService customerService) {
-        this.customerService = customerService;
+    public CreateCustomerFrame() {
+        this.customerController = new CustomerController();
         setTitle("Create New Customer");
         setSize(400, 300);
         setLocationRelativeTo(null);
@@ -53,7 +52,7 @@ public class CreateCustomerFrame extends JFrame {
         createButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                handleCreateCustomer();
+                customerController.handleCreateCustomer(nameField, phoneField, addressField, CreateCustomerFrame.this);
             }
         });
 
@@ -67,25 +66,5 @@ public class CreateCustomerFrame extends JFrame {
         add(panel, BorderLayout.CENTER);
 
         setVisible(true);
-    }
-
-    private void handleCreateCustomer() {
-        // Retrieve input from text fields
-        String name = nameField.getText().trim();
-        String phone = phoneField.getText().trim();
-        String address = addressField.getText().trim();
-
-        try {
-            // Call the CustomerService to create the customer
-            customerService.createCustomer(name, phone, address);
-            JOptionPane.showMessageDialog(this, "Customer created successfully.", "Success",
-                    JOptionPane.INFORMATION_MESSAGE);
-            dispose(); // Close the frame after successful creation
-        } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Input Error", JOptionPane.ERROR_MESSAGE);
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Error creating customer: " + ex.getMessage(), "Database Error",
-                    JOptionPane.ERROR_MESSAGE);
-        }
     }
 }

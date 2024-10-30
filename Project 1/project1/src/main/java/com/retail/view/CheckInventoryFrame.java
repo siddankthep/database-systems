@@ -3,32 +3,15 @@ package com.retail.view;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.List;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.table.TableRowSorter;
-
-import java.sql.SQLException;
 
 import com.retail.controller.InventoryController;
-import com.retail.model.dao.ProductDAO;
-import com.retail.model.dao.SupplierDAO;
-import com.retail.model.dao.SupplierOrderDAO;
-import com.retail.model.entities.Product;
-import com.retail.model.entities.Supplier;
-import com.retail.model.services.ProductService;
-import com.retail.model.services.SupplierOrderService;
-import com.retail.model.services.SupplierService;
 
 public class CheckInventoryFrame extends JFrame {
     private JTable inventoryTable;
     private JTextField searchField;
     private InventoryController inventoryController;
-
-    // private ProductService productService;
-    // private SupplierService supplierService;
-    // private List<Product> products;
-    // private Object[][] data;
 
     public CheckInventoryFrame() {
         this.inventoryController = new InventoryController();
@@ -73,8 +56,7 @@ public class CheckInventoryFrame extends JFrame {
         JPanel buttonPanel = new JPanel();
         JButton makeSupplierOrderButton = new JButton("Make Supplier Order");
         makeSupplierOrderButton
-                .addActionListener(e -> new SupplierOrderFrame(new SupplierOrderService(new SupplierOrderDAO()),
-                        new ProductService(new ProductDAO()), new SupplierService(new SupplierDAO())));
+                .addActionListener(e -> new SupplierOrderFrame());
 
         JButton refreshButton = new JButton("Refresh");
         refreshButton.addActionListener(e -> inventoryController.refreshTable(model));

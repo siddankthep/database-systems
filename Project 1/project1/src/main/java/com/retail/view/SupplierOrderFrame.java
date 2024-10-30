@@ -30,7 +30,7 @@ public class SupplierOrderFrame extends JFrame {
     private ProductService productService;
     private SupplierService supplierService;
     private int supplierId = -1;
-    private double totalAmount = 0.0;
+    // private double totalAmount = 0.0;
 
     public SupplierOrderFrame(SupplierOrderService supplierOrderService, ProductService productService,
             SupplierService supplierService) {
@@ -41,7 +41,7 @@ public class SupplierOrderFrame extends JFrame {
         setSize(800, 400);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         // setLocationRelativeTo(null);
-        setLocation(100, 100);
+        setLocation(550, 0);
 
         JPanel inputPanel = new JPanel();
         GroupLayout layout = new GroupLayout(inputPanel);
@@ -96,7 +96,7 @@ public class SupplierOrderFrame extends JFrame {
         // Subtotal Panel
         JPanel subtotalPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
-        subtotalLabel = new JLabel(String.format("Subtotal: $%.2f", totalAmount));
+        subtotalLabel = new JLabel("Subtotal: $0.00");
         subtotalPanel.add(subtotalLabel);
         add(subtotalPanel, BorderLayout.SOUTH);
 
@@ -214,15 +214,16 @@ public class SupplierOrderFrame extends JFrame {
     }
 
     private void updateSubtotal() {
-        // double subtotal = 0.0;
+        double subtotal = 0.0;
         for (int i = 0; i < orderTableModel.getRowCount(); i++) {
-            totalAmount += (double) orderTableModel.getValueAt(i, 5);
+            subtotal += (double) orderTableModel.getValueAt(i, 5);
         }
-        subtotalLabel.setText(String.format("Subtotal: $%.2f", totalAmount));
+        subtotalLabel.setText(String.format("Subtotal: $%.2f", subtotal));
     }
 
     // public static void main(String[] args) {
-    //     new SupplierOrderFrame(new SupplierOrderService(new SupplierOrderDAO()), new ProductService(new ProductDAO()),
-    //             new SupplierService(new SupplierDAO()));
+    // new SupplierOrderFrame(new SupplierOrderService(new SupplierOrderDAO()), new
+    // ProductService(new ProductDAO()),
+    // new SupplierService(new SupplierDAO()));
     // }
 }

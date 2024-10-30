@@ -37,7 +37,7 @@ public class ManagerMenu extends JFrame {
         checkInventoryButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CheckInventoryFrame(new ProductService(new ProductDAO()), new SupplierService(new SupplierDAO()));
+                new CheckInventoryFrame();
             }
         });
 

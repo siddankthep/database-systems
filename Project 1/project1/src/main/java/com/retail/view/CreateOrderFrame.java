@@ -236,7 +236,7 @@ public class CreateOrderFrame extends JFrame {
         }
     }
 
-    class AddProductButtonListener implements ActionListener {
+    class AddProductButtonListener implements ActionListener { // TODO: check if product out of stock
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
@@ -244,9 +244,16 @@ public class CreateOrderFrame extends JFrame {
                 int quantity = Integer.parseInt(quantityField.getText());
 
                 // Fetch product details from the service
-                String productName = productService.getProductNameById(productId); // This should return the product
-                // name
-                double price = productService.getProductPriceById(productId); // This should return the product price
+                Product product = productService.getProductById(productId);
+                String productName = product.getProductName();
+                double price = product.getPrice();
+                int stockQuantity = product.getStockQuantity();
+
+                if (quantity > stockQuantity) {
+                    JOptionPane.showMessageDialog(CreateOrderFrame.this,
+                            "Not enough stock available for product: " + productName);
+                    return;
+                }
 
                 double total = price * quantity;
 

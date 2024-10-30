@@ -7,9 +7,10 @@ import java.util.List;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.TableRowSorter;
-import javax.swing.RowFilter;
+
 import java.sql.SQLException;
 
+import com.retail.controller.InventoryController;
 import com.retail.model.dao.ProductDAO;
 import com.retail.model.dao.SupplierDAO;
 import com.retail.model.dao.SupplierOrderDAO;
@@ -22,50 +23,22 @@ import com.retail.model.services.SupplierService;
 public class CheckInventoryFrame extends JFrame {
     private JTable inventoryTable;
     private JTextField searchField;
-    private ProductService productService;
-    private SupplierService supplierService;
-    private List<Product> products;
-    private Object[][] data;
+    private InventoryController inventoryController;
 
-    public CheckInventoryFrame(ProductService productService, SupplierService supplierService) {
-        this.supplierService = supplierService;
-        this.productService = productService;
+    // private ProductService productService;
+    // private SupplierService supplierService;
+    // private List<Product> products;
+    // private Object[][] data;
+
+    public CheckInventoryFrame() {
+        this.inventoryController = new InventoryController();
         setTitle("Check Inventory");
         setSize(600, 400);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
+        setLocation(700, 400);
 
-        // Sample data, you would usually fetch this from your database
         String[] columnNames = { "Product ID", "Product Name", "Supplier Name", "Unit Price", "Stock Quantity" };
-        try {
-            products = productService.getAllProducts();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        data = new Object[products.size()][4];
-
-        for (int i = 0; i < products.size(); i++) {
-            try {
-
-                Product product = products.get(i);
-
-                Object productID = (Object) product.getProductId();
-                Object productName = (Object) product.getProductName();
-                Supplier supplier = supplierService.getSupplierById(product.getSupplierId());
-                Object supplierName = (Object) supplier.getSupplierName();
-                Object price = (Object) product.getPrice();
-                Object stockQuantity = (Object) product.getStockQuantity();
-
-                Object[] row = { productID, productName, supplierName, price, stockQuantity };
-                data[i] = row;
-            } catch (SQLException e) {
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Error fetching products: " + e.getMessage());
-            }
-        }
-
-        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+        DefaultTableModel model = new DefaultTableModel(inventoryController.fetchProductData(), columnNames);
         inventoryTable = new JTable(model);
 
         JScrollPane scrollPane = new JScrollPane(inventoryTable);
@@ -77,17 +50,17 @@ public class CheckInventoryFrame extends JFrame {
         searchField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                filterTableSearch(model, searchField.getText().toLowerCase());
+                inventoryController.filterTableSearch(model, searchField.getText().toLowerCase(), inventoryTable);
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                filterTableSearch(model, searchField.getText().toLowerCase());
+                inventoryController.filterTableSearch(model, searchField.getText().toLowerCase(), inventoryTable);
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                filterTableSearch(model, searchField.getText().toLowerCase());
+                inventoryController.filterTableSearch(model, searchField.getText().toLowerCase(), inventoryTable);
             }
         });
 
@@ -104,38 +77,8 @@ public class CheckInventoryFrame extends JFrame {
                         new ProductService(new ProductDAO()), new SupplierService(new SupplierDAO())));
 
         JButton refreshButton = new JButton("Refresh");
-        refreshButton.addActionListener(e -> {
-            try {
-                products = productService.getAllProducts();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+        refreshButton.addActionListener(e -> inventoryController.refreshTable(model));
 
-            data = new Object[products.size()][4];
-
-            for (int i = 0; i < products.size(); i++) {
-                try {
-
-                    Product product = products.get(i);
-                    
-                    Object productID = (Object) product.getProductId();
-                    Object productName = (Object) product.getProductName();
-                    Supplier supplier = supplierService.getSupplierById(product.getSupplierId());
-                    Object supplierName = (Object) supplier.getSupplierName();
-                    Object price = (Object) product.getPrice();
-                    Object stockQuantity = (Object) product.getStockQuantity();
-                    
-                    Object[] row = { productID, productName, supplierName, price, stockQuantity };
-                    data[i] = row;
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(this, "Error fetching products: " + ex.getMessage());
-                }
-            }
-
-            model.setDataVector(data, columnNames);
-            model.fireTableDataChanged();
-        });
         buttonPanel.add(makeSupplierOrderButton);
         buttonPanel.add(refreshButton);
         add(buttonPanel, BorderLayout.SOUTH);
@@ -143,20 +86,4 @@ public class CheckInventoryFrame extends JFrame {
         setVisible(true);
     }
 
-    private void filterTableSearch(DefaultTableModel model, String searchTerm) {
-        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
-        inventoryTable.setRowSorter(sorter);
-
-        if (searchTerm.trim().length() == 0) {
-            sorter.setRowFilter(null);
-        } else {
-            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchTerm));
-        }
-    }
-
-    // public static void main(String[] args) {
-    //     SwingUtilities.invokeLater(() -> {
-    //         new CheckInventoryFrame(new ProductService(new ProductDAO()), new SupplierService(new SupplierDAO()));
-    //     });
-    // }
 }

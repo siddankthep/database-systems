@@ -25,7 +25,7 @@ public class CreateOrderFrame extends JFrame {
     public CreateOrderFrame() {
         this.orderController = new OrderController();
         setTitle("Create Order");
-        setSize(900, 400);
+        setSize(1100, 400);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -69,6 +69,10 @@ public class CreateOrderFrame extends JFrame {
         addButton.addActionListener(
                 e -> orderController.addProductToOrder(productIdField, quantityField, orderTableModel, subtotalLabel));
 
+        JButton removeButton = new JButton("Remove from Order");
+        removeButton.addActionListener(
+                e -> orderController.removeItemFromOrder(orderTable, orderTableModel, subtotalLabel));
+
         shipOrderCheckbox = new JCheckBox("Ship this order");
         shipOrderCheckbox.addActionListener(e -> {
             if (shipOrderCheckbox.isSelected()) {
@@ -98,6 +102,7 @@ public class CreateOrderFrame extends JFrame {
                         .addComponent(customerIdField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
                                 GroupLayout.PREFERRED_SIZE)
                         .addComponent(addButton)
+                        .addComponent(removeButton)
                         .addComponent(createOrderButton)
                         .addComponent(shipOrderCheckbox));
 
@@ -111,6 +116,7 @@ public class CreateOrderFrame extends JFrame {
                         .addComponent(customerIdLabel)
                         .addComponent(customerIdField)
                         .addComponent(addButton)
+                        .addComponent(removeButton)
                         .addComponent(createOrderButton)
                         .addComponent(shipOrderCheckbox));
 

@@ -30,6 +30,15 @@ public class OrderController {
         this.customerService = new CustomerService(new CustomerDAO());
     }
 
+    public void removeItemFromOrder(JTable orderTable, DefaultTableModel orderTableModel,
+            JLabel subtotalLabel) {
+        int selectedRow = orderTable.getSelectedRow();
+        if (selectedRow != -1) {
+            orderTableModel.removeRow(selectedRow);
+            updateSubtotal(orderTableModel, subtotalLabel);
+        }
+    }
+
     public int assignShipper(JLabel assignedShipperLabel) {
         try {
             int shipperId = shipperService.getRandomShipperId();
@@ -135,7 +144,7 @@ public class OrderController {
             // Clear input fields
             productIdField.setText("");
             quantityField.setText("");
-            
+
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, "Please enter valid numbers for Product ID and Quantity.");
         } catch (SQLException ex) {

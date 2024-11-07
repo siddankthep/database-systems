@@ -39,6 +39,11 @@ public class CreateEmployeeFrame extends JFrame {
                 roleField, CreateEmployeeFrame.this));
 
         panel.add(createButton);
+
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(e -> dispose());
+        panel.add(cancelButton);
+
         add(panel);
 
         setVisible(true);

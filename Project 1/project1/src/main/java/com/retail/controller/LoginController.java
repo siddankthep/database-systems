@@ -6,14 +6,17 @@ import javax.swing.JOptionPane;
 import com.retail.model.dao.UserAccountDAO;
 import com.retail.model.services.UserAccountService;
 import com.retail.view.EmployeeMenu;
+import com.retail.view.LoginFrame;
 import com.retail.view.ManagerMenu;
 import com.retail.view.components.LabeledTextInput;
 
 public class LoginController {
     private UserAccountService userAccountService;
+    private LoginFrame loginFrame;
 
-    public LoginController() {
+    public LoginController(LoginFrame loginFrame) {
         this.userAccountService = new UserAccountService(new UserAccountDAO());
+        this.loginFrame = loginFrame;
     }
 
     public void authenticate(LabeledTextInput usernameInput, LabeledTextInput passwordInput, JFrame frame) {
@@ -24,11 +27,13 @@ public class LoginController {
                 JOptionPane.showMessageDialog(frame, "Login successful!");
                 int role = userAccountService.getUserRole(username);
                 if (role == 1) {
-                    new EmployeeMenu();
+                    new EmployeeMenu(loginFrame);
                 } else {
-                    new ManagerMenu();
+                    new ManagerMenu(loginFrame);
                 }
-                frame.dispose();
+                frame.setVisible(false);
+                loginFrame.getUsernameInput().setText("");
+                loginFrame.getPasswordInput().setText("");
             } else {
                 JOptionPane.showMessageDialog(frame,
                         "Login failed. Please check your username and password.");

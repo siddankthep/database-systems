@@ -8,10 +8,10 @@ import java.awt.event.ActionListener;
 
 public class EmployeeMenu extends JFrame {
 
-    public EmployeeMenu() {
+    public EmployeeMenu(JFrame loginFrame) {
         setTitle("Employee Menu");
         setSize(400, 300);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
         JPanel panel = new JPanel();
@@ -19,6 +19,7 @@ public class EmployeeMenu extends JFrame {
 
         JButton createOrderButton = new JButton("Create Order");
         JButton createCustomerButton = new JButton("Create Customer");
+        JButton logoutButton = new JButton("Logout");
 
         createOrderButton.addActionListener(new ActionListener() {
             @Override
@@ -34,8 +35,17 @@ public class EmployeeMenu extends JFrame {
             }
         });
 
+        logoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                loginFrame.setVisible(true);
+            }
+        });
+
         panel.add(createOrderButton);
         panel.add(createCustomerButton);
+        panel.add(logoutButton);
         add(panel);
 
         setVisible(true);

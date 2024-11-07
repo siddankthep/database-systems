@@ -26,4 +26,8 @@ public class LabeledTextInput extends JPanel {
         return text.getText();
     }
 
+    public void setText(String text) {
+        this.text.setText(text);
+    }
+
 }

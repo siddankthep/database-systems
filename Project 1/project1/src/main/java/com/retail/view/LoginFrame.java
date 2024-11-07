@@ -14,7 +14,7 @@ public class LoginFrame extends JFrame {
     private LoginController loginController;
 
     public LoginFrame() {
-        this.loginController = new LoginController();
+        this.loginController = new LoginController(this);
         this.setTitle("Login");
         this.setSize(400, 200);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,5 +40,23 @@ public class LoginFrame extends JFrame {
         this.add(loginButton, c);
 
     }
+
+    public LabeledTextInput getUsernameInput() {
+        return usernameInput;
+    }
+
+    public LabeledTextInput getPasswordInput() {
+        return passwordInput;
+    }
+
+    public JButton getLoginButton() {
+        return loginButton;
+    }
+
+    public LoginController getLoginController() {
+        return loginController;
+    }
+
+    
 
 }

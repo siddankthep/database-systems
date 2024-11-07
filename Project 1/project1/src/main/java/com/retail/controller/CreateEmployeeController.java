@@ -29,7 +29,7 @@ public class CreateEmployeeController {
         UserAccount user = new UserAccount(0, username, password, roleID, createdAt, lastLogin);
         try {
             userAccountService.createUser(user);
-            JOptionPane.showMessageDialog(frame, "Employee created: " + username);
+            JOptionPane.showMessageDialog(frame, "User created: " + username);
             frame.dispose();
         } catch (SQLException e1) {
             JOptionPane.showMessageDialog(frame,

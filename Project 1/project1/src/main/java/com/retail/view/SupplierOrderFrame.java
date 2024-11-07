@@ -21,7 +21,7 @@ public class SupplierOrderFrame extends JFrame {
                 setTitle("Create Supplier Order");
                 setSize(800, 400);
                 setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-                setLocation(550, 0);
+                setLocationRelativeTo(null);
 
                 JPanel inputPanel = new JPanel();
                 GroupLayout layout = new GroupLayout(inputPanel);

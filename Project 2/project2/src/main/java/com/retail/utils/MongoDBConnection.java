@@ -17,21 +17,19 @@ public class MongoDBConnection {
     private MongoDBConnection() {
         Properties properties = new Properties();
         try (FileInputStream input = new FileInputStream("src/main/resources/config.properties")) {
-            // Load properties from config file
             properties.load(input);
 
             String uri = properties.getProperty("MONGODB_URL");
-            // Connection URI for the local MongoDB server
+            String db = properties.getProperty("MONGODB_DATABASE");
 
-            // Create the MongoClient and connect to the database
             mongoClient = MongoClients.create(uri);
-            database = mongoClient.getDatabase("myDatabase");
+            database = mongoClient.getDatabase(db);
         } catch (Exception e) {
             System.out.println("Error loading config.properties file: " + e.getMessage());
         }
     }
 
-    // Public method to provide access to the single instance
+    // Singleton pattern
     public static MongoDBConnection getInstance() {
         if (instance == null) {
             synchronized (MongoDBConnection.class) {
@@ -53,6 +51,12 @@ public class MongoDBConnection {
         if (mongoClient != null) {
             mongoClient.close();
         }
+    }
+
+    public static void main(String[] args) {
+        MongoDBConnection connection = MongoDBConnection.getInstance();
+        System.out.println("Connected to database: " + connection.getDatabase().getName());
+        connection.close();
     }
 
 }

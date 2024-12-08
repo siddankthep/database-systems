@@ -19,6 +19,14 @@ public class UserAccount {
         this.lastLogin = lastLogin;
     }
 
+    public UserAccount(String username, String passwordHash, int roleId) {
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.roleId = roleId;
+        this.createdAt = new Date();
+        this.lastLogin = null;
+    }
+
     public int getUserId() {
         return userId;
     }
@@ -65,17 +73,5 @@ public class UserAccount {
 
     public void setLastLogin(Date lastLogin) {
         this.lastLogin = lastLogin;
-    }
-
-    @Override
-    public String toString() {
-        return "UserAccount{" +
-                "userId=" + userId +
-                ", username='" + username + '\'' +
-                ", passwordHash='" + passwordHash + '\'' +
-                ", roleId=" + roleId +
-                ", createdAt=" + createdAt +
-                ", lastLogin=" + lastLogin +
-                '}';
     }
 }

@@ -16,7 +16,7 @@ public class OrderService {
         this.orderDAO = orderDAO;
     }
 
-    public int createOrder(Date orderDate, int customerId, int shipperId, double totalAmount) throws SQLException {
+    public int createOrderSQL(Date orderDate, int customerId, int shipperId, double totalAmount) throws SQLException {
 
         if (orderDate == null || customerId <= 0 || shipperId < 0 || totalAmount <= 0) {
             System.out.println("Date: " + orderDate + " Customer ID: " + customerId + " Shipper ID: " + shipperId
@@ -28,20 +28,20 @@ public class OrderService {
         Order order = new Order(0, orderDate, customerId, shipperId, totalAmount);
 
         // Call DAO to insert order
-        int orderId = orderDAO.insert(order);
+        int orderId = orderDAO.insertSQL(order);
         order.setOrderId(orderId); // Set the generated order ID
         return orderId;
     }
 
-    public void addOrderDetail(OrderDetails orderDetail) throws SQLException {
-        orderDAO.addOrderDetail(orderDetail);
+    public void addOrderDetailSQL(OrderDetails orderDetail) throws SQLException {
+        orderDAO.addOrderDetailSQL(orderDetail);
     }
 
-    public List<Order> getAllOrders() throws SQLException {
-        return orderDAO.getAllOrders();
+    public List<Order> getAllOrdersSQL() throws SQLException {
+        return orderDAO.getAllOrdersSQL();
     }
 
-    public List<OrderDetails> getOrderDetails(int orderId) throws SQLException {
-        return orderDAO.getOrderDetails(orderId);
+    public List<OrderDetails> getOrderDetailsSQL(int orderId) throws SQLException {
+        return orderDAO.getOrderDetailsSQL(orderId);
     }
 }

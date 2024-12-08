@@ -12,7 +12,7 @@ public class CustomerService {
         this.customerDAO = customerDAO;
     }
 
-    public void createCustomer(String name, String phone, String address) throws SQLException {
+    public void createCustomerSQL(String name, String phone, String address) throws SQLException {
         // Validate the inputs
         if (name == null || name.trim().isEmpty() ||
                 phone == null || phone.trim().isEmpty() ||
@@ -24,14 +24,14 @@ public class CustomerService {
         Customer customer = new Customer(0, name, phone, address);
 
         // Save customer to the database
-        customerDAO.insert(customer);
+        customerDAO.insertSQL(customer);
     }
 
-    public Customer getCustomerById(int customerId) throws SQLException {
+    public Customer getCustomerByIdSQL(int customerId) throws SQLException {
         if (customerId <= 0) {
             throw new IllegalArgumentException("Invalid customer ID.");
         }
 
-        return customerDAO.getById(customerId);
+        return customerDAO.getByIdSQL(customerId);
     }
 }

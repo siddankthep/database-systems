@@ -65,7 +65,7 @@ public class OrderController {
             String subtotalString = subtotalStrings[subtotalStrings.length - 1];
             Double totalAmount = Double.parseDouble(subtotalString);
 
-            int orderId = orderService.createOrder(new Date(), customerId, shipperId, totalAmount);
+            int orderId = orderService.createOrderSQL(new Date(), customerId, shipperId, totalAmount);
             // Process each item in the order table
             for (int i = 0; i < orderTableModel.getRowCount(); i++) {
                 int productId = (int) orderTableModel.getValueAt(i, 0);
@@ -75,7 +75,7 @@ public class OrderController {
                 product.setStockQuantity(product.getStockQuantity() - quantity);
                 productService.updateProduct(product);
                 OrderDetails orderDetail = new OrderDetails(orderId, productId, quantity);
-                orderService.addOrderDetail(orderDetail);
+                orderService.addOrderDetailSQL(orderDetail);
             }
             JOptionPane.showMessageDialog(null, "Order created successfully!");
             // Clear the order table and reset the subtotal
@@ -104,7 +104,7 @@ public class OrderController {
         if (!customerId.isEmpty()) {
             try {
                 Integer.parseInt(customerId);
-                String customerName = customerService.getCustomerById(Integer.parseInt(customerId)).getName();
+                String customerName = customerService.getCustomerByIdSQL(Integer.parseInt(customerId)).getName();
                 customerNameLabel.setText("Customer Name: " + customerName);
             } catch (SQLException ex) {
                 ex.printStackTrace();

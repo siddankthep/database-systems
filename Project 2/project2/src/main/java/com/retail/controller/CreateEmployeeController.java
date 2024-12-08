@@ -1,7 +1,6 @@
 package com.retail.controller;
 
 import java.sql.SQLException;
-import java.util.Date;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -23,10 +22,8 @@ public class CreateEmployeeController {
         String username = usernameField.getText();
         String password = passwordField.getText();
         int roleID = Integer.parseInt(roleField.getText());
-        Date createdAt = new Date();
-        Date lastLogin = null;
 
-        UserAccount user = new UserAccount(0, username, password, roleID, createdAt, lastLogin);
+        UserAccount user = new UserAccount(username, password, roleID);
         try {
             userAccountService.createUser(user);
             JOptionPane.showMessageDialog(frame, "User created: " + username);

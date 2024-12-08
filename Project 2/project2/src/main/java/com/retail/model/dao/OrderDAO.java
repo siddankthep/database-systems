@@ -13,7 +13,7 @@ import com.retail.utils.MySQLConnection;
 
 public class OrderDAO {
 
-    public int insert(Order order) throws SQLException {
+    public int insertSQL(Order order) throws SQLException {
         String sql = "INSERT INTO `Order` (OrderDate, CustomerId, ShipperId, TotalAmount) VALUES (?, ?, ?, ?)";
         Connection connection = MySQLConnection.getConnection();
         try (
@@ -34,7 +34,7 @@ public class OrderDAO {
         }
     }
 
-    public void addOrderDetail(OrderDetails orderDetail) throws SQLException {
+    public void addOrderDetailSQL(OrderDetails orderDetail) throws SQLException {
         String sql = "INSERT INTO OrderDetails (OrderId, ProductID, Quantity) VALUES (?, ?, ?)";
         Connection connection = MySQLConnection.getConnection();
         try (
@@ -46,7 +46,7 @@ public class OrderDAO {
         }
     }
 
-    public List<Order> getAllOrders() throws SQLException {
+    public List<Order> getAllOrdersSQL() throws SQLException {
         List<Order> orders = new ArrayList<>();
         String sql = "SELECT * FROM `Order`";
         Connection connection = MySQLConnection.getConnection();
@@ -66,7 +66,7 @@ public class OrderDAO {
         return orders;
     }
 
-    public List<OrderDetails> getOrderDetails(int orderId) throws SQLException {
+    public List<OrderDetails> getOrderDetailsSQL(int orderId) throws SQLException {
         List<OrderDetails> orderDetailsList = new ArrayList<>();
         String sql = "SELECT * FROM OrderDetails WHERE orderId = ?";
         Connection connection = MySQLConnection.getConnection();

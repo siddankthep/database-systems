@@ -8,7 +8,7 @@ import com.retail.model.entities.Customer;
 import com.retail.utils.MySQLConnection;
 
 public class CustomerDAO {
-    public void insert(Customer customer) throws SQLException {
+    public void insertSQL(Customer customer) throws SQLException {
         String sql = "INSERT INTO Customer (Name, Phone, Address) VALUES (?, ?, ?)";
         Connection conn = MySQLConnection.getConnection();
         try (
@@ -20,7 +20,7 @@ public class CustomerDAO {
         }
     }
 
-    public void update(Customer customer) throws SQLException {
+    public void updateSQL(Customer customer) throws SQLException {
         String sql = "UPDATE Customer SET Name = ?, Phone = ?, Address = ? WHERE CustomerID = ?";
         Connection conn = MySQLConnection.getConnection();
         try (
@@ -33,7 +33,7 @@ public class CustomerDAO {
         }
     }
 
-    public void delete(int customerId) throws SQLException {
+    public void deleteSQL(int customerId) throws SQLException {
         String sql = "DELETE FROM Customer WHERE CustomerID = ?";
         Connection conn = MySQLConnection.getConnection();
         try (
@@ -43,7 +43,7 @@ public class CustomerDAO {
         }
     }
 
-    public Customer getById(int customerId) throws SQLException {
+    public Customer getByIdSQL(int customerId) throws SQLException {
         String sql = "SELECT * FROM Customer WHERE CustomerID = ?";
         Connection conn = MySQLConnection.getConnection();
         try (
@@ -58,7 +58,7 @@ public class CustomerDAO {
         return null;
     }
 
-    public List<Customer> getAll() throws SQLException {
+    public List<Customer> getAllSQL() throws SQLException {
         List<Customer> customers = new ArrayList<>();
         String sql = "SELECT * FROM Customer";
         Connection conn = MySQLConnection.getConnection();

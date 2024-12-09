@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 import com.retail.model.dao.UserAccountDAO;
 import com.retail.model.services.UserAccountService;
 import com.retail.view.LoginFrame;
-import com.retail.view.Customer.StorefrontFrame;
+import com.retail.view.Customer.CustomerMenu;
 import com.retail.view.Employee.EmployeeMenu;
 import com.retail.view.Manager.ManagerMenu;
 import com.retail.view.components.LabeledTextInput;
@@ -32,7 +32,7 @@ public class LoginController {
                 } else if (role == 2) {
                     new ManagerMenu(loginFrame);
                 } else {
-                    new StorefrontFrame();
+                    new CustomerMenu(loginFrame, username);
                 }
                 frame.setVisible(false);
                 loginFrame.getUsernameInput().setText("");

@@ -3,9 +3,12 @@ package com.retail.view.Customer;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import com.retail.model.dao.CustomerDAO;
 import com.retail.model.dao.ProductDAO;
+import com.retail.model.entities.CustomerMongo;
 import com.retail.model.entities.OrderDetails;
 import com.retail.model.entities.Product;
+import com.retail.model.services.CustomerService;
 import com.retail.model.services.ProductService;
 
 import java.awt.*;
@@ -18,14 +21,17 @@ import javax.swing.table.TableCellRenderer;
 
 public class StorefrontFrame extends JFrame {
     private ProductService productService = new ProductService(new ProductDAO());
+    private CustomerService customerService = new CustomerService(new CustomerDAO());
     private JTable productTable;
     private DefaultTableModel tableModel;
-    private List<Product> cart = new ArrayList<>();
+    private List<OrderDetails> cart = new ArrayList<>();
     private List<Product> products;
     private JButton viewCartButton;
     private JButton goToPaymentButton;
+    private CustomerMongo customer;
 
-    public StorefrontFrame() {
+    public StorefrontFrame(String phone) {
+        this.customer = customerService.findCustomerByPhoneMongo(phone);
         setTitle("Storefront");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -76,9 +82,11 @@ public class StorefrontFrame extends JFrame {
         viewCartButton.addActionListener(e -> addToCart());
         buttonPanel.add(viewCartButton);
 
-        // goToPaymentButton = new JButton("Go to Payment [0]");
-        // goToPaymentButton.addActionListener(e -> goToPay());
-        // buttonPanel.add(goToPaymentButton);
+        goToPaymentButton = new JButton("Go to Payment [0]");
+        goToPaymentButton.addActionListener(e -> goToPay());
+        buttonPanel.add(goToPaymentButton);
+
+        setVisible(true);
     }
 
     // Show cart details
@@ -88,7 +96,8 @@ public class StorefrontFrame extends JFrame {
             int quantity = (int) tableModel.getValueAt(i, 3); // Quantity column
             if (quantity > 0) {
                 Product product = products.get(i);
-                OrderDetails orderDetails = new OrderDetails(0, 0, product.getProductId(), quantity);
+                OrderDetails orderDetails = new OrderDetails(product.getProductId(), quantity);
+                cart.add(orderDetails);
             }
         }
         int productCount = cart.size();
@@ -101,17 +110,18 @@ public class StorefrontFrame extends JFrame {
 
     }
 
-    // private void goToPay() {
-    //     PaymentFrame paymentFrame = new PaymentFrame(cart);
-    //     paymentFrame.setVisible(true);
-    //     this.setVisible(false);
-    // }
+    private void goToPay() {
+        PaymentFrame paymentFrame = new PaymentFrame(cart, customer, this);
+        paymentFrame.setVisible(true);
+        this.setVisible(false);
+    }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            StorefrontFrame ui = new StorefrontFrame();
-            ui.setVisible(true);
-        });
+    public void clearQuantityAndCart() {
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            tableModel.setValueAt(0, i, 3); // Quantity column
+        }
+        cart.clear();
+        goToPaymentButton.setText("Go to Payment [0]");
     }
 
     // Button renderer for JTable

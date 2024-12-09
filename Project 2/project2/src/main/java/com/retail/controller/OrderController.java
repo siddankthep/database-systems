@@ -74,13 +74,14 @@ public class OrderController {
                 Product product = productService.getProductById(productId);
                 product.setStockQuantity(product.getStockQuantity() - quantity);
                 productService.updateProduct(product);
-                OrderDetails orderDetail = new OrderDetails(orderId, productId, quantity);
+                OrderDetails orderDetail = new OrderDetails(0, orderId, productId, quantity);
                 orderService.addOrderDetailSQL(orderDetail);
+                orderTableModel.setRowCount(0);
+                new OrderDetails(0, orderId, productId, quantity);
+                updateSubtotal(orderTableModel, subtotalLabel);
             }
             JOptionPane.showMessageDialog(null, "Order created successfully!");
             // Clear the order table and reset the subtotal
-            orderTableModel.setRowCount(0);
-            updateSubtotal(orderTableModel, subtotalLabel);
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error creating order: " + ex.getMessage(), "Database Error",

@@ -30,7 +30,7 @@ public class CustomerController {
 
         try {
             // Call the CustomerService to create the customer
-            customerService.createCustomerSQL(name, phone, address);
+            customerService.createCustomerMongo(name, phone, address);
             userAccountService.createUser(new UserAccount(phone, "password", 3)); // Create a user account with role 3
                                                                                   // (customer)
             JOptionPane.showMessageDialog(null, "Customer created successfully.", "Success",

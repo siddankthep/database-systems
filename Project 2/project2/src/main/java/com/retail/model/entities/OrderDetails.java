@@ -15,8 +15,7 @@ public class OrderDetails {
     }
 
     // Constructor without orderDetailId (for new order details)
-    public OrderDetails(int orderId, int productId, int quantity) {
-        this.orderId = orderId;
+    public OrderDetails(int productId, int quantity) {
         this.productId = productId;
         this.quantity = quantity;
     }

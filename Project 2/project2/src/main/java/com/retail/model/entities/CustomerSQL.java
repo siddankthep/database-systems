@@ -1,12 +1,12 @@
 package com.retail.model.entities;
 
-public class Customer {
+public class CustomerSQL {
     private int customerId;
     private String name;
     private String phone;
     private String address;
 
-    public Customer(int customerId, String name, String phone, String address) {
+    public CustomerSQL(int customerId, String name, String phone, String address) {
         this.customerId = customerId;
         this.name = name;
         this.phone = phone;

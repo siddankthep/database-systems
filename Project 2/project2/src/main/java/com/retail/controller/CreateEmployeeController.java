@@ -17,13 +17,12 @@ public class CreateEmployeeController {
         this.userAccountService = new UserAccountService(new UserAccountDAO());
     }
 
-    public void createEmployee(JTextField usernameField, JTextField passwordField, JTextField roleField, JFrame frame) {
+    public void createEmployee(JTextField usernameField, JTextField passwordField, JFrame frame) {
 
         String username = usernameField.getText();
         String password = passwordField.getText();
-        int roleID = Integer.parseInt(roleField.getText());
 
-        UserAccount user = new UserAccount(username, password, roleID);
+        UserAccount user = new UserAccount(username, password, 1);
         try {
             userAccountService.createUser(user);
             JOptionPane.showMessageDialog(frame, "User created: " + username);

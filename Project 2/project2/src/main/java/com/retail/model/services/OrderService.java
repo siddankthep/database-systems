@@ -4,8 +4,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.retail.model.dao.OrderDAO;
-import com.retail.model.entities.Order;
+import com.retail.model.entities.OrderSQL;
 import com.retail.model.entities.OrderDetails;
+import com.retail.model.entities.OrderMongo;
 
 import java.util.Date;
 
@@ -25,7 +26,7 @@ public class OrderService {
         }
 
         // Create a new Order object
-        Order order = new Order(0, orderDate, customerId, shipperId, totalAmount);
+        OrderSQL order = new OrderSQL(0, orderDate, customerId, shipperId, totalAmount);
 
         // Call DAO to insert order
         int orderId = orderDAO.insertSQL(order);
@@ -37,11 +38,15 @@ public class OrderService {
         orderDAO.addOrderDetailSQL(orderDetail);
     }
 
-    public List<Order> getAllOrdersSQL() throws SQLException {
+    public List<OrderSQL> getAllOrdersSQL() throws SQLException {
         return orderDAO.getAllOrdersSQL();
     }
 
     public List<OrderDetails> getOrderDetailsSQL(int orderId) throws SQLException {
         return orderDAO.getOrderDetailsSQL(orderId);
+    }
+
+    public void createOrderMongo(OrderMongo order) {
+        orderDAO.insertMongo(order);
     }
 }

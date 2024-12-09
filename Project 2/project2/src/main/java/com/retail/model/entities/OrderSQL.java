@@ -2,14 +2,14 @@ package com.retail.model.entities;
 
 import java.util.Date;
 
-public class Order {
+public class OrderSQL {
     private int orderId;
     private Date orderDate;
     private int customerId;
     private int shipperId;
     private double totalAmount;
 
-    public Order(int orderId, Date orderDate, int customerId, int shipperId, double totalAmount) {
+    public OrderSQL(int orderId, Date orderDate, int customerId, int shipperId, double totalAmount) {
         this.orderId = orderId;
         this.orderDate = orderDate;
         this.customerId = customerId;

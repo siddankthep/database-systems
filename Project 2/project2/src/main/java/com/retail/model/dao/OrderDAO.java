@@ -150,6 +150,26 @@ public class OrderDAO {
 
         return orders;
     }
+    
+    public List<OrderMongo> getAllOrdersMongo() {
+        List<OrderMongo> orders = new ArrayList<>();
+
+        try {
+            MongoCollection<Document> orderCollection = mongoDatabase.getCollection("Order");
+
+            // Query to fetch orders for the given customer phone
+            MongoCursor<Document> cursor = orderCollection.find().iterator();
+
+            while (cursor.hasNext()) {
+                Document doc = cursor.next();
+                orders.add(mapDocumentToOrder(doc));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return orders;
+    }
 
     private OrderMongo mapDocumentToOrder(Document doc) {
         ObjectId id = doc.getObjectId("_id");

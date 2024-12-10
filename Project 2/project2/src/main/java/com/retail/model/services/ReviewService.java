@@ -1,5 +1,7 @@
 package com.retail.model.services;
 
+import java.util.List;
+
 import com.retail.model.dao.ReviewDAO;
 import com.retail.model.entities.Product;
 import com.retail.model.entities.Review;
@@ -21,6 +23,10 @@ public class ReviewService {
 
     public boolean isProductReviewed(Product product, String phone) {
         return reviewDAO.isProductReviewed(product.getProductId(), phone);
+    }
+
+    public List<Review> getAllReviews() {
+        return reviewDAO.getAllReviews();
     }
 
 }

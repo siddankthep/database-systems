@@ -3,14 +3,14 @@ package com.retail.model.services;
 import com.retail.model.dao.RedisDAO;
 import redis.clients.jedis.Tuple;
 
-import java.util.List;
+import java.util.Date;
 import java.util.Set;
 
 public class RedisService {
     private RedisDAO redisDAO = new RedisDAO();
 
-    public void incrementProductSales(int productId, double quantity) {
-        redisDAO.incrementProductSales(productId, quantity);
+    public void incrementProductSales(String productName, double quantity) {
+        redisDAO.incrementProductSales(productName, quantity);
     }
 
     public Set<Tuple> getTopBestSellingProducts(int topN) {
@@ -18,12 +18,12 @@ public class RedisService {
         return redisDAO.getTopBestSellingProducts(topN);
     }
 
-    public void addRecentCustomer(String customerPhone) {
-        redisDAO.addRecentCustomer(customerPhone);
+    public void addRecentCustomer(String customerPhone, Date purchaseDate) {
+        redisDAO.addRecentCustomer(customerPhone, purchaseDate);
     }
 
-    public List<String> getRecentCustomers(int limit) {
-        return redisDAO.getRecentCustomers(limit);
+    public Set<String> getRecentCustomerPurchases(int limit) {
+        return redisDAO.getRecentCustomerPurchases(limit);
     }
 
     public void setCustomerDetails(String customerPhone, String field, String value) {

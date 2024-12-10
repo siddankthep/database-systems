@@ -19,6 +19,9 @@ public class ManagerMenu extends JFrame {
 
         JButton createEmployeeButton = new JButton("Create Employee Account");
         JButton checkInventoryButton = new JButton("Check Inventory");
+        JButton checkReviewsButton = new JButton("Check Reviews");
+        JButton checkBestSellingButton = new JButton("Check Best Selling Products");
+        JButton checkRecentCustomersButton = new JButton("Check Recent Customers");
         JButton logoutButton = new JButton("Logout");
 
         createEmployeeButton.addActionListener(new ActionListener() {
@@ -35,6 +38,27 @@ public class ManagerMenu extends JFrame {
             }
         });
 
+        checkReviewsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new CheckReviewsFrame();
+            }
+        });
+
+        checkBestSellingButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new BestSellingProductsFrame();
+            }
+        });
+
+        checkRecentCustomersButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new RecentCustomersFrame();
+            }
+        });
+
         logoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -45,6 +69,9 @@ public class ManagerMenu extends JFrame {
 
         panel.add(createEmployeeButton);
         panel.add(checkInventoryButton);
+        panel.add(checkReviewsButton);
+        panel.add(checkBestSellingButton);
+        panel.add(checkRecentCustomersButton);
         panel.add(logoutButton);
         add(panel);
 

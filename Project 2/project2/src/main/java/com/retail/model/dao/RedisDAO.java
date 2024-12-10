@@ -3,7 +3,7 @@ package com.retail.model.dao;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Tuple;
 
-import java.util.List;
+import java.util.Date;
 import java.util.Set;
 
 import com.retail.utils.RedisDBConnection;
@@ -17,9 +17,8 @@ public class RedisDAO {
     }
 
     // Method to increment product sales
-    public void incrementProductSales(int productId, double quantity) {
-        String productIdString = String.valueOf(productId);
-        jedis.zincrby("product:sales", quantity, productIdString);
+    public void incrementProductSales(String productName, double quantity) {
+        jedis.zincrby("product:sales", quantity, productName);
     }
 
     // Method to retrieve top N best-selling products
@@ -28,14 +27,19 @@ public class RedisDAO {
     }
 
     // Method to add a recent customer
-    public void addRecentCustomer(String customerPhone) {
-        jedis.lpush("customer:recent", customerPhone);
-        jedis.ltrim("customer:recent", 0, 99); // Limit the list to the most recent 100 customers
+    public void addRecentCustomer(String phone, Date purchaseDate) {
+        // Convert java.util.Date to epoch timestamp
+        long timestamp = purchaseDate.getTime() / 1000; // Convert milliseconds to seconds
+
+        // Add to the sorted set
+        String value = phone + ":" + purchaseDate.toString();
+        jedis.zadd("customer:recent", timestamp, value);
     }
 
     // Method to retrieve the most recent N customers
-    public List<String> getRecentCustomers(int limit) {
-        return jedis.lrange("customer:recent", 0, limit - 1);
+    public Set<String> getRecentCustomerPurchases(int limit) {
+        // Retrieve the most recent purchases from the sorted set
+        return jedis.zrevrange("customer:recent", 0, limit - 1);
     }
 
     // Method to add or update a customer's details
@@ -53,7 +57,6 @@ public class RedisDAO {
         return jedis.hkeys("customer:" + customerPhone);
     }
 
-
     // Close the Redis connection
     public void close() {
         if (jedis != null) {
@@ -64,10 +67,6 @@ public class RedisDAO {
     public static void main(String[] args) {
         RedisDAO redisDAO = new RedisDAO();
 
-        // Increment product sales
-        redisDAO.incrementProductSales(1, 5);
-        redisDAO.incrementProductSales(2, 10);
-        redisDAO.incrementProductSales(3, 15);
 
         // Retrieve top 3 best-selling products
         Set<Tuple> bestSellingProducts = redisDAO.getTopBestSellingProducts(3);
@@ -77,20 +76,18 @@ public class RedisDAO {
         }
 
         // Add recent customers
-        redisDAO.addRecentCustomer("1234");
-        redisDAO.addRecentCustomer("1235");
-        redisDAO.addRecentCustomer("1236");
+        redisDAO.addRecentCustomer("1234567890", new Date()); // Current date
+        redisDAO.addRecentCustomer("0987654321", new Date(System.currentTimeMillis() - 86400000L)); // 1 day ago
+        redisDAO.addRecentCustomer("1122334455", new Date(System.currentTimeMillis() - 2 * 86400000L)); // 2 days ago
 
-        // Retrieve the most recent 2 customers
-        List<String> recentCustomers = redisDAO.getRecentCustomers(2);
-        System.out.println("Most Recent Customers:");
-        for (String customer : recentCustomers) {
-            System.out.println("Customer ID: " + customer);
+        // Retrieve the most recent customer purchases
+        Set<String> recentPurchases = redisDAO.getRecentCustomerPurchases(5);
+
+        // Display recent purchases
+        System.out.println("Most Recent Customer Purchases:");
+        for (String purchase : recentPurchases) {
+            System.out.println(purchase);
         }
 
-        // Set customer details
-        redisDAO.setCustomerDetails("1234", "name", "Alice");
-        redisDAO.setCustomerDetails("1234", "email", "alice@gmail.com");
-        
     }
 }

@@ -3,7 +3,6 @@ package com.retail.view.Customer;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-
 import java.awt.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -110,10 +109,11 @@ public class PaymentFrame extends JFrame {
                     Product product = productService.getProductById(productId);
                     int quantity = details.getQuantity();
                     productService.updateProductItemsSold(product, quantity);
-                    redisService.incrementProductSales(productId, quantity);
+                    redisService.incrementProductSales(product.getProductName(), quantity);
+                    redisService.addRecentCustomer(customer.getPhone(), new Date());
                 }
                 OrderMongo order = new OrderMongo(new Date(), shipperService.getRandomShipperId(), subtotal, "Paid",
-                cart, customer.getPhone());
+                        cart, customer.getPhone());
                 orderService.createOrderMongo(order);
                 JOptionPane.showMessageDialog(this, "Order created successfully!");
                 dispose();
@@ -133,8 +133,9 @@ public class PaymentFrame extends JFrame {
                     int productId = details.getProductId();
                     Product product = productService.getProductById(productId);
                     int quantity = details.getQuantity();
-                    productService.updateProductItemsSold(product, quantity); 
-                    redisService.incrementProductSales(productId, quantity);
+                    productService.updateProductItemsSold(product, quantity);
+                    redisService.incrementProductSales(product.getProductName(), quantity);
+                    redisService.addRecentCustomer(customer.getPhone(), new Date());
                 }
                 OrderMongo order = new OrderMongo(new Date(), shipperService.getRandomShipperId(), subtotal, "Unpaid",
                         cart, customer.getPhone());

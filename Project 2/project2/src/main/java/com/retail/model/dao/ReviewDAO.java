@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import org.bson.Document;
 
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.retail.model.entities.OrderMongo;
 import com.retail.model.entities.Product;
 import com.retail.model.entities.Review;
 import com.retail.utils.MongoDBConnection;
@@ -57,14 +59,14 @@ public class ReviewDAO {
             e.printStackTrace();
             System.err.println("Error getting reviews: " + e.getMessage());
         }
-
+        
         return reviews;
     }
-
-        public boolean isProductReviewed(int productId, String customerPhone) {
-            try {
+    
+    public boolean isProductReviewed(int productId, String customerPhone) {
+        try {
             MongoCollection<Document> reviewsCollection = database.getCollection("Reviews");
-
+            
             // Query for an existing review
             Document query = new Document("productId", productId).append("customerPhone", customerPhone);
             return reviewsCollection.find(query).first() != null;
@@ -73,4 +75,35 @@ public class ReviewDAO {
             return false;
         }
     }
+    
+    public List<Review> getAllReviews() {
+        List<Review> reviews = new ArrayList<>();
+        
+        try {
+            MongoCollection<Document> orderCollection = database.getCollection("Reviews");
+            
+            // Query to fetch orders for the given customer phone
+            MongoCursor<Document> cursor = orderCollection.find().iterator();
+            
+            while (cursor.hasNext()) {
+                Document doc = cursor.next();
+                reviews.add(mapDocumentToReview(doc));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return reviews;
+    }
+
+    private Review mapDocumentToReview(Document doc) {
+        Review review = new Review();
+        review.setId(doc.getObjectId("_id"));
+        review.setRating(doc.getInteger("rating"));
+        review.setComment(doc.getString("comment"));
+        review.setProductId(doc.getInteger("productId"));
+        review.setCustomerPhone(doc.getString("customerPhone"));
+        return review;
+    }
 }
+

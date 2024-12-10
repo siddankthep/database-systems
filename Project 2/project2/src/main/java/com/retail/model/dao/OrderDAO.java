@@ -5,7 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import javax.print.Doc;
 
 import com.retail.model.entities.OrderSQL;
 import com.retail.model.entities.OrderDetails;
@@ -13,8 +16,10 @@ import com.retail.model.entities.OrderMongo;
 import com.retail.utils.MongoDBConnection;
 import com.retail.utils.MySQLConnection;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 public class OrderDAO {
     MongoDatabase mongoDatabase = MongoDBConnection.getInstance().getDatabase();
@@ -125,4 +130,48 @@ public class OrderDAO {
             e.printStackTrace();
         }
     }
+
+    public List<OrderMongo> getAllOrdersByPhoneMongo(String customerPhone) {
+        List<OrderMongo> orders = new ArrayList<>();
+
+        try {
+            MongoCollection<Document> orderCollection = mongoDatabase.getCollection("Order");
+
+            // Query to fetch orders for the given customer phone
+            Document query = new Document("CustomerPhone", customerPhone);
+            MongoCursor<Document> cursor = orderCollection.find(query).iterator();
+
+            while (cursor.hasNext()) {
+                Document doc = cursor.next();
+                orders.add(mapDocumentToOrder(doc));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return orders;
+    }
+
+    private OrderMongo mapDocumentToOrder(Document doc) {
+        ObjectId id = doc.getObjectId("_id");
+        Date orderDate = doc.getDate("OrderDate");
+        int shipperId = doc.getInteger("ShipperID", 0);
+        double totalAmount = doc.getDouble("TotalAmount");
+        String payment = doc.getString("payment");
+        String customerPhone = doc.getString("CustomerPhone");
+
+        // Map OrderDetails
+        List<OrderDetails> orderDetails = new ArrayList<>();
+        List<Document> details = doc.getList("OrderDetails", Document.class);
+        if (details != null) {
+            for (Document detailDoc : details) {
+                int productId = detailDoc.getInteger("ProductID");
+                int quantity = detailDoc.getInteger("Quantity");
+                orderDetails.add(new OrderDetails(productId, quantity));
+            }
+        }
+
+        return new OrderMongo(id, orderDate, shipperId, totalAmount, payment, orderDetails, customerPhone);
+    }
+
 }

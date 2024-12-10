@@ -41,4 +41,6 @@ public class ProductService {
     public List<Product> getAllProducts() throws SQLException {
         return productDAO.getAll();
     }
+
+    
 }

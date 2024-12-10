@@ -49,4 +49,8 @@ public class OrderService {
     public void createOrderMongo(OrderMongo order) {
         orderDAO.insertMongo(order);
     }
+
+    public List<OrderMongo> getAllOrdersByPhoneMongo(String phone) {
+        return orderDAO.getAllOrdersByPhoneMongo(phone);
+    }
 }

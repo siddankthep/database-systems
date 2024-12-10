@@ -33,7 +33,7 @@ public class CustomerMenu extends JFrame {
         checkHistoryButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new OrderHistoryFrame();
+                new OrderHistoryFrame(phone);
             }
         });
 

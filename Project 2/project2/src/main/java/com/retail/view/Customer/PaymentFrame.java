@@ -2,6 +2,8 @@ package com.retail.view.Customer;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+
 import java.awt.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -11,6 +13,7 @@ import java.util.List;
 import com.retail.model.entities.Product;
 import com.retail.model.services.OrderService;
 import com.retail.model.services.ProductService;
+import com.retail.model.services.RedisService;
 import com.retail.model.services.ShipperService;
 import com.retail.model.dao.OrderDAO;
 import com.retail.model.dao.ProductDAO;
@@ -24,6 +27,7 @@ public class PaymentFrame extends JFrame {
     private ProductService productService = new ProductService(new ProductDAO());
     private OrderService orderService = new OrderService(new OrderDAO());
     private ShipperService shipperService = new ShipperService(new ShipperDAO());
+    private RedisService redisService = new RedisService();
     private CustomerMongo customer;
     private StorefrontFrame storefront;
     double subtotal;
@@ -101,8 +105,15 @@ public class PaymentFrame extends JFrame {
         JButton checkoutButton = new JButton("Checkout");
         checkoutButton.addActionListener(e -> {
             try {
+                for (OrderDetails details : cart) {
+                    int productId = details.getProductId();
+                    Product product = productService.getProductById(productId);
+                    int quantity = details.getQuantity();
+                    productService.updateProductItemsSold(product, quantity);
+                    redisService.incrementProductSales(productId, quantity);
+                }
                 OrderMongo order = new OrderMongo(new Date(), shipperService.getRandomShipperId(), subtotal, "Paid",
-                        cart, customer.getPhone());
+                cart, customer.getPhone());
                 orderService.createOrderMongo(order);
                 JOptionPane.showMessageDialog(this, "Order created successfully!");
                 dispose();
@@ -118,6 +129,13 @@ public class PaymentFrame extends JFrame {
         JButton payAtCashierButton = new JButton("Pay at Cashier");
         payAtCashierButton.addActionListener(e -> {
             try {
+                for (OrderDetails details : cart) {
+                    int productId = details.getProductId();
+                    Product product = productService.getProductById(productId);
+                    int quantity = details.getQuantity();
+                    productService.updateProductItemsSold(product, quantity); 
+                    redisService.incrementProductSales(productId, quantity);
+                }
                 OrderMongo order = new OrderMongo(new Date(), shipperService.getRandomShipperId(), subtotal, "Unpaid",
                         cart, customer.getPhone());
                 orderService.createOrderMongo(order);

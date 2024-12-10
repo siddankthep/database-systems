@@ -18,6 +18,10 @@ public class ProductService {
         productDAO.insert(product);
     }
 
+    public void updateProductItemsSold(Product product, int soldItemsCount) throws SQLException {
+        productDAO.updateItemSold(product, soldItemsCount);
+    }
+
     public void updateProduct(Product product) throws SQLException {
         productDAO.update(product);
     }

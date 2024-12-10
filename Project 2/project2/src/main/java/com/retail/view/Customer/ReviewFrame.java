@@ -3,7 +3,6 @@ package com.retail.view.Customer;
 import com.retail.model.dao.ReviewDAO;
 import com.retail.model.entities.Product;
 import com.retail.model.entities.Review;
-import com.retail.model.services.ProductService;
 import com.retail.model.services.ReviewService;
 
 import javax.swing.*;

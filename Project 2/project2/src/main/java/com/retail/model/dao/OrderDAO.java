@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.print.Doc;
 
 import com.retail.model.entities.OrderSQL;
 import com.retail.model.entities.OrderDetails;

@@ -11,7 +11,8 @@ CREATE TABLE `Product` (
   `Price` DECIMAL(10,2),
   `Unit` INT,
   `SupplierID` INT,
-  `StockQuantity` INT
+  `StockQuantity` INT,
+  `ItemsSold` INT DEFAULT 0
 );
 
 CREATE TABLE `Order` (

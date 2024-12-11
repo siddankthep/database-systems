@@ -95,9 +95,18 @@ public class PaymentController {
                 for (OrderDetails details : cart) {
                     int productId = details.getProductId();
                     Product product = productService.getProductById(productId);
-                    int quantity = details.getQuantity();
-                    productService.updateProductItemsSold(product, quantity);
-                    redisService.incrementProductSales(product.getProductName(), quantity);
+                    int quantitySold = details.getQuantity();
+                    int currentStock = product.getStockQuantity();
+                    int currentItemsSold = product.getItemsSold();
+                    if (quantitySold > currentStock) {
+                        JOptionPane.showMessageDialog(payment, "Not enough stock, only " + currentStock + " left.");
+                        return;
+                    }
+                    product.setStockQuantity(currentStock - quantitySold);
+                    product.setItemsSold(currentItemsSold + quantitySold);
+
+                    productService.updateProduct(product);
+                    redisService.incrementProductSales(product.getProductName(), quantitySold);
                     redisService.addRecentCustomer(customer.getPhone(), new Date());
                 }
                 OrderMongo order = new OrderMongo(new Date(), shipperService.getRandomShipperId(), this.subtotal,

@@ -2,11 +2,12 @@ package com.retail.view.Manager;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import com.retail.controller.Manager.InventoryController;
+
 import java.awt.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
-import com.retail.controller.InventoryController;
 
 public class CheckInventoryFrame extends JFrame {
     private JTable inventoryTable;

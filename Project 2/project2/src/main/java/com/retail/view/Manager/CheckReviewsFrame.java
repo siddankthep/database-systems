@@ -1,7 +1,9 @@
 package com.retail.view.Manager;
 
-import com.retail.controller.CheckReviewsController;
 import javax.swing.*;
+
+import com.retail.controller.Manager.CheckReviewsController;
+
 import java.awt.*;
 
 public class CheckReviewsFrame extends JFrame {

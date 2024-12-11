@@ -3,7 +3,7 @@ package com.retail.view.Manager;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-import com.retail.controller.SupplierOrderController;
+import com.retail.controller.Manager.SupplierOrderController;
 
 import java.awt.*;
 

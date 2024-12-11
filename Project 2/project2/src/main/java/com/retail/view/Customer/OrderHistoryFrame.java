@@ -1,6 +1,6 @@
 package com.retail.view.Customer;
 
-import com.retail.controller.OrderHistoryController;
+import com.retail.controller.Customer.OrderHistoryController;
 import com.retail.model.dao.CustomerDAO;
 import com.retail.model.dao.OrderDAO;
 import com.retail.model.entities.CustomerMongo;

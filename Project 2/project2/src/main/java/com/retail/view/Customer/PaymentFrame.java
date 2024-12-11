@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-import com.retail.controller.PaymentController;
+import com.retail.controller.Customer.PaymentController;
 import com.retail.model.entities.CustomerMongo;
 import com.retail.model.entities.OrderDetails;
 

@@ -1,6 +1,6 @@
 package com.retail.view.Customer;
 
-import com.retail.controller.ReviewController;
+import com.retail.controller.Customer.ReviewController;
 import com.retail.model.entities.Product;
 import javax.swing.*;
 import java.awt.*;

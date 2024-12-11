@@ -2,7 +2,7 @@ package com.retail.view.Employee;
 
 import javax.swing.*;
 
-import com.retail.controller.CustomerController;
+import com.retail.controller.Employee.CreateCustomerController;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,10 +11,10 @@ import java.awt.event.ActionListener;
 public class CreateCustomerFrame extends JFrame {
     private JTextField nameField, phoneField, addressField;
     private JButton createButton, cancelButton;
-    private CustomerController customerController;
+    private CreateCustomerController customerController;
 
     public CreateCustomerFrame() {
-        this.customerController = new CustomerController();
+        this.customerController = new CreateCustomerController();
         setTitle("Create New Customer");
         setSize(400, 300);
         setLocationRelativeTo(null);

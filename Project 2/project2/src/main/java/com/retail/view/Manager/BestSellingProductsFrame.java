@@ -1,7 +1,9 @@
 package com.retail.view.Manager;
 
 import javax.swing.*;
-import com.retail.controller.BestSellingProductController;
+
+import com.retail.controller.Manager.BestSellingProductController;
+
 import java.awt.*;
 
 public class BestSellingProductsFrame extends JFrame {

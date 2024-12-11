@@ -1,7 +1,9 @@
 package com.retail.view.Manager;
 
 import javax.swing.*;
-import com.retail.controller.RecentCustomerController;
+
+import com.retail.controller.Manager.RecentCustomerController;
+
 import java.awt.*;
 
 public class RecentCustomersFrame extends JFrame {

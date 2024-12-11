@@ -1,7 +1,8 @@
 package com.retail.view.Customer;
 
 import javax.swing.*;
-import com.retail.controller.StorefrontController;
+
+import com.retail.controller.Customer.StorefrontController;
 import com.retail.model.dao.CustomerDAO;
 import com.retail.model.entities.CustomerMongo;
 import com.retail.model.entities.OrderDetails;

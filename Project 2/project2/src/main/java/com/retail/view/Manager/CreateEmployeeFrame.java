@@ -2,7 +2,7 @@ package com.retail.view.Manager;
 
 import javax.swing.*;
 
-import com.retail.controller.CreateEmployeeController;
+import com.retail.controller.Manager.CreateEmployeeController;
 
 import java.awt.*;
 

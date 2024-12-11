@@ -1,7 +1,9 @@
 package com.retail.view.Employee;
 
-import com.retail.controller.UnpaidOrdersController;
 import javax.swing.*;
+
+import com.retail.controller.Employee.UnpaidOrdersController;
+
 import java.awt.*;
 
 public class UnpaidOrdersFrame extends JFrame {

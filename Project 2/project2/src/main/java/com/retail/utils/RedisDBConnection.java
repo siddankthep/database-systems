@@ -48,13 +48,4 @@ public class RedisDBConnection {
         return jedis;
     }
 
-    public static void main(String[] args) {
-        RedisDBConnection redisDBConnection = RedisDBConnection.getInstance();
-        Jedis jedis = redisDBConnection.getJedis();
-        jedis.set("foo", "bar");
-        String value = jedis.get("foo");
-        System.out.println(value);
-    }
-
-
 }

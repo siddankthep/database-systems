@@ -1,17 +1,14 @@
 package com.retail.view.Customer;
 
-import com.retail.model.dao.ReviewDAO;
+import com.retail.controller.ReviewController;
 import com.retail.model.entities.Product;
-import com.retail.model.entities.Review;
-import com.retail.model.services.ReviewService;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ReviewFrame extends JFrame {
-    private ReviewService reviewService = new ReviewService(new ReviewDAO());
+    private ReviewController reviewController;
 
     public ReviewFrame(String customerPhone, Product product) {
         setTitle("Write a Review for " + product.getProductName());
@@ -27,28 +24,8 @@ public class ReviewFrame extends JFrame {
         JTextArea commentArea = new JTextArea(3, 20);
 
         JButton submitButton = new JButton("Submit");
-        submitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    int rating = Integer.parseInt(ratingField.getText());
-                    String comment = commentArea.getText();
-
-                    if (rating < 1 || rating > 5) {
-                        JOptionPane.showMessageDialog(ReviewFrame.this, "Rating must be between 1 and 5.");
-                        return;
-                    }
-
-                    Review review = new Review(product.getProductId(), customerPhone, rating, comment);
-                    reviewService.addReview(review);
-
-                    JOptionPane.showMessageDialog(ReviewFrame.this, "Review submitted successfully!");
-                    dispose();
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(ReviewFrame.this, "Please enter a valid rating.");
-                }
-            }
-        });
+        reviewController = new ReviewController(ratingField, commentArea, customerPhone, this, product);
+        submitButton.addActionListener(e -> reviewController.submitReview());
 
         JButton cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(new ActionListener() {

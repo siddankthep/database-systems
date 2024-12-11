@@ -17,14 +17,14 @@ public class EmployeeMenu extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(0, 1));
 
-        JButton createOrderButton = new JButton("Create Order");
+        JButton createOrderButton = new JButton("Checkout Unpaid Orders");
         JButton createCustomerButton = new JButton("Create Customer");
         JButton logoutButton = new JButton("Logout");
 
         createOrderButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CreateOrderFrame();
+                new UnpaidOrdersFrame();
             }
         });
 

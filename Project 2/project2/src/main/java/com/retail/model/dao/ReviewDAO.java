@@ -8,7 +8,6 @@ import org.bson.Document;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-import com.retail.model.entities.OrderMongo;
 import com.retail.model.entities.Product;
 import com.retail.model.entities.Review;
 import com.retail.utils.MongoDBConnection;

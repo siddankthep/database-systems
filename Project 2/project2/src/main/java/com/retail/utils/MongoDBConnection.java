@@ -53,10 +53,4 @@ public class MongoDBConnection {
         }
     }
 
-    public static void main(String[] args) {
-        MongoDBConnection connection = MongoDBConnection.getInstance();
-        System.out.println("Connected to database: " + connection.getDatabase().getName());
-        connection.close();
-    }
-
 }

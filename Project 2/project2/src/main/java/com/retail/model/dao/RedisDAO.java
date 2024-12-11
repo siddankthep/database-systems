@@ -64,30 +64,4 @@ public class RedisDAO {
         }
     }
 
-    public static void main(String[] args) {
-        RedisDAO redisDAO = new RedisDAO();
-
-
-        // Retrieve top 3 best-selling products
-        Set<Tuple> bestSellingProducts = redisDAO.getTopBestSellingProducts(3);
-        System.out.println("Top 3 Best-Selling Products:");
-        for (Tuple product : bestSellingProducts) {
-            System.out.println("Product ID: " + product.getElement() + ", Sales: " + product.getScore());
-        }
-
-        // Add recent customers
-        redisDAO.addRecentCustomer("1234567890", new Date()); // Current date
-        redisDAO.addRecentCustomer("0987654321", new Date(System.currentTimeMillis() - 86400000L)); // 1 day ago
-        redisDAO.addRecentCustomer("1122334455", new Date(System.currentTimeMillis() - 2 * 86400000L)); // 2 days ago
-
-        // Retrieve the most recent customer purchases
-        Set<String> recentPurchases = redisDAO.getRecentCustomerPurchases(5);
-
-        // Display recent purchases
-        System.out.println("Most Recent Customer Purchases:");
-        for (String purchase : recentPurchases) {
-            System.out.println(purchase);
-        }
-
-    }
 }

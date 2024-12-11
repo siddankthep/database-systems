@@ -171,6 +171,28 @@ public class OrderDAO {
         return orders;
     }
 
+    public List<OrderMongo> getUnpaidOrdersMongo() {
+        List<OrderMongo> unpaidOrders = new ArrayList<>();
+
+        try  {
+            // Access the database and collection
+            MongoCollection<Document> ordersCollection = mongoDatabase.getCollection("Order");
+
+            // Query to find unpaid orders
+            Document query = new Document("payment", "Unpaid");
+            MongoCursor<Document> cursor = ordersCollection.find(query).iterator();
+
+            while (cursor.hasNext()) {
+                Document doc = cursor.next();
+                unpaidOrders.add(mapDocumentToOrder(doc));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return unpaidOrders;
+    }
+
     private OrderMongo mapDocumentToOrder(Document doc) {
         ObjectId id = doc.getObjectId("_id");
         Date orderDate = doc.getDate("OrderDate");
@@ -191,6 +213,22 @@ public class OrderDAO {
         }
 
         return new OrderMongo(id, orderDate, shipperId, totalAmount, payment, orderDetails, customerPhone);
+    }
+
+    public void updateOrderPaymentStatusMongo(String orderId, String paymentStatus) {
+        try {
+            // Access the database and collection
+            MongoCollection<Document> ordersCollection = mongoDatabase.getCollection("Order");
+
+            // Query to find the order by ID
+            Document query = new Document("_id", new ObjectId(orderId));
+            Document update = new Document("$set", new Document("payment", paymentStatus));
+
+            // Update the payment status
+            ordersCollection.updateOne(query, update);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -53,4 +53,12 @@ public class OrderService {
     public List<OrderMongo> getAllOrdersByPhoneMongo(String phone) {
         return orderDAO.getAllOrdersByPhoneMongo(phone);
     }
+
+    public List<OrderMongo> getUnpaidOrdersMongo() {
+        return orderDAO.getUnpaidOrdersMongo();
+    }
+
+    public void updateOrderPaymentStatusMongo(String orderId, String paymentStatus) {
+        orderDAO.updateOrderPaymentStatusMongo(orderId, paymentStatus);
+    }
 }

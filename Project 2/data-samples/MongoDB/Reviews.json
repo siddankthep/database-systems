@@ -1,0 +1,56 @@
+[
+  {
+    "_id": {
+      "$oid": "67551ec4d0b0813925e9496c"
+    },
+    "rating": 5,
+    "comment": "Excellent service!",
+    "productId": 1,
+    "customerPhone": "Alice"
+  },
+  {
+    "_id": {
+      "$oid": "6757d8f34a1c7046d6e3d061"
+    },
+    "rating": 4,
+    "comment": "Excellent!",
+    "productId": 6,
+    "customerPhone": "0865665985"
+  },
+  {
+    "_id": {
+      "$oid": "6758554d9614291a5664ad35"
+    },
+    "rating": 4,
+    "comment": "Meh",
+    "productId": 2,
+    "customerPhone": "0865665985"
+  },
+  {
+    "_id": {
+      "$oid": "67585d356fd3e87541513df1"
+    },
+    "rating": 1,
+    "comment": "Terrible!",
+    "productId": 5,
+    "customerPhone": "0865665985"
+  },
+  {
+    "_id": {
+      "$oid": "675a5c2de1512a14c7436b75"
+    },
+    "rating": 4,
+    "comment": "Love it!",
+    "productId": 5,
+    "customerPhone": "123456789"
+  },
+  {
+    "_id": {
+      "$oid": "675a5c5ce1512a14c7436b76"
+    },
+    "rating": 2,
+    "comment": "Bad product",
+    "productId": 3,
+    "customerPhone": "123456789"
+  }
+]

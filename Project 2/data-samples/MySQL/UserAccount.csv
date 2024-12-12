@@ -1,0 +1,6 @@
+UserID,Username,PasswordHash,RoleID,CreatedAt,LastLogin
+1,jsmith,password,1,2024-09-05,2024-10-11
+2,admin,password,2,2024-09-10,2024-10-12
+3,cash,password,1,2024-12-09,
+6,0865665985,password,3,2024-12-09,
+7,123456789,password,3,2024-12-12,

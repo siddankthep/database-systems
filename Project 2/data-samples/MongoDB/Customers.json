@@ -1,0 +1,26 @@
+[
+  {
+    "_id": {
+      "$oid": "67551da0d0b0813925e9496a"
+    },
+    "name": "Alice",
+    "address": "123 Main St, Springfield",
+    "phone": "123-456-7890"
+  },
+  {
+    "_id": {
+      "$oid": "67566fd3d6e3dc220e07d957"
+    },
+    "name": "sid",
+    "phone": "0865665985",
+    "address": "Era"
+  },
+  {
+    "_id": {
+      "$oid": "675a5be8e1512a14c7436b72"
+    },
+    "name": "huy",
+    "phone": "123456789",
+    "address": "FUV"
+  }
+]

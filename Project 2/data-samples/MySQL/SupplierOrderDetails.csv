@@ -1,0 +1,4 @@
+SupplierOrderDetailID,SupplierOrderID,ProductID,Quantity
+1,1,1,10
+2,1,2,20
+3,2,3,15

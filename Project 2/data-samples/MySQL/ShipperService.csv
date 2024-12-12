@@ -1,0 +1,3 @@
+ShipperServiceID,ShippingServiceName,ShippingFeePerKM,ShippingRange
+1,Express Shipping,10,Local
+2,Standard Shipping,5,National

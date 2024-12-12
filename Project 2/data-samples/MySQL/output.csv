@@ -1,0 +1,12 @@
+Tables_in_retail_db_2
+Customer
+Order
+OrderDetails
+Product
+Shipper
+ShipperService
+Supplier
+SupplierOrder
+SupplierOrderDetails
+UserAccount
+UserRole
